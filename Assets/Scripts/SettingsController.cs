@@ -4,24 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SettingsController : MonoBehaviour
 {
     public Dropdown resolutionDropdown;
-    public Dropdown refreshRateDropdown;
     public Toggle windowedToggle;
+    public Slider musicSlider;
+    public Slider soundSlider;
+    public AudioSource music;
+    public GameObject dialog;
     private string[] strlist;
-    private string refRatestr;
     private int width;
     private int height;
-    private int refreshRate;
     private Boolean windowed;
+    private string resolution;
 
     void Start()
     {
         width = Screen.width;
         height = Screen.height;
-        string resolution = width + "x" + height;
+        resolution = width + "x" + height;
         var listAvailableStrings = resolutionDropdown.options.Select(option => option.text).ToList();
         resolutionDropdown.value = listAvailableStrings.IndexOf(resolution);
         Debug.Log(listAvailableStrings.IndexOf(resolution));
@@ -34,16 +37,19 @@ public class SettingsController : MonoBehaviour
             windowed = true;
             windowedToggle.isOn = true;
         }
+        musicSlider.value = PlayerPrefs.GetFloat("musicVolume", 1.0f);
+        soundSlider.value = PlayerPrefs.GetFloat("soundVolume", 1.0f);
+        music.volume = musicSlider.value;
+    }
+
+    void OnGUI()
+    {
+        music.volume = musicSlider.value;
     }
 
     public void ResolutionDropdownValueChanged()
     {
         strlist = resolutionDropdown.captionText.text.Split('x');
-    }
-
-    public void RefreshRateValueChanged()
-    {
-        refRatestr = refreshRateDropdown.captionText.text.Substring(0, 2);
     }
 
     public void WindowedToggleChanged()
@@ -62,16 +68,31 @@ public class SettingsController : MonoBehaviour
             width = 1920;
             height = 1200;
         }
-        try
+        PlayerPrefs.SetFloat("soundVolume", soundSlider.value);
+        PlayerPrefs.SetFloat("musicVolume", musicSlider.value);
+        Debug.Log(width.ToString() + ", " + height.ToString() + ", " + windowed);
+        Screen.SetResolution(width, height, !windowed, 0);
+        if(dialog.activeSelf)
         {
-            refreshRate = int.Parse(refRatestr);
+            SceneManager.LoadScene("StartScene");
         }
-        catch (Exception e)
+    }
+
+    public void Back()
+    {
+        if(!resolution.Equals(resolutionDropdown.captionText.text) || Screen.fullScreen == windowed || musicSlider.value != PlayerPrefs.GetFloat("musicVolume", 1.0f) || soundSlider.value != PlayerPrefs.GetFloat("soundVolume", 1.0f))
         {
-            refreshRate = 0;
+            Debug.Log("Back button pressed");
+            dialog.SetActive(true);
         }
-        Debug.Log(width.ToString() + ", " + height.ToString() + ", " + windowed + ", " + refreshRate.ToString());
-        Screen.SetResolution(width, height, !windowed, refreshRate);
-        Debug.Log(Screen.currentResolution);
+        else
+        {
+            SceneManager.LoadScene("StartScene");
+        }
+    }
+
+    public void DialogExit()
+    {
+        SceneManager.LoadScene("StartScene");
     }
 }
