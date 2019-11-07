@@ -1,13 +1,10 @@
 {
   "dependencies": {
-<<<<<<< HEAD
-
-=======
+  
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.ads": "2.0.8",
     "com.unity.analytics": "3.3.2",
->>>>>>> 937d3f40f6aacde86300957ed3db843ac42ca92b
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.rider": "1.1.0",
@@ -22,18 +19,6 @@
     "com.unity.xr.legacyinputhelpers": "2.0.2",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
-<<<<<<< HEAD
-
-    "com.unity.ads": "2.0.8",
-    "com.unity.analytics": "3.2.2",
-
-
-    "com.unity.purchasing": "2.0.3",
-
-
-
-=======
->>>>>>> 937d3f40f6aacde86300957ed3db843ac42ca92b
     "com.unity.modules.animation": "1.0.0",
     "com.unity.modules.assetbundle": "1.0.0",
     "com.unity.modules.audio": "1.0.0",
