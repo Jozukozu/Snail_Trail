@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class BackgroundMusic : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    private AudioSource _audioSource;
+    private void Awake()
     {
-        
+        DontDestroyOnLoad(transform.gameObject);
+        _audioSource = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlayMusic()
     {
-        
+        if (_audioSource.isPlaying) return;
+        _audioSource.Play();
     }
+
+    public void StopMusic()
+    {
+        _audioSource.Stop();
+    }
+
 }
