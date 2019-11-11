@@ -22,6 +22,7 @@ public class SettingsController : MonoBehaviour
 
     void Start()
     {
+        GameObject.FindGameObjectWithTag("Music").GetComponent<BackgroundMusic>().PlayMusic();
         width = Screen.width;
         height = Screen.height;
         resolution = width + "x" + height;
@@ -39,12 +40,12 @@ public class SettingsController : MonoBehaviour
         }
         musicSlider.value = PlayerPrefs.GetFloat("musicVolume", 1.0f);
         soundSlider.value = PlayerPrefs.GetFloat("soundVolume", 1.0f);
-        music.volume = musicSlider.value;
+        //music.volume = musicSlider.value;
     }
 
     void OnGUI()
     {
-        music.volume = musicSlider.value;
+        //music.volume = musicSlider.value;
     }
 
     public void ResolutionDropdownValueChanged()
