@@ -27,4 +27,8 @@ public class BackgroundMusic : MonoBehaviour
         _audioSource.Stop();
     }
 
+    public void SetVolume(float volume)
+    {
+        _audioSource.volume = volume;
+    }
 }
