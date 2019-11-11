@@ -73,7 +73,8 @@ public class SettingsController : MonoBehaviour
         PlayerPrefs.SetFloat("musicVolume", musicSlider.value);
         Debug.Log(width.ToString() + ", " + height.ToString() + ", " + windowed);
         Screen.SetResolution(width, height, !windowed, 0);
-        if(dialog.activeSelf)
+        resolution = width + "x" + height;
+        if (dialog.activeSelf)
         {
             SceneManager.LoadScene("StartScene");
         }
