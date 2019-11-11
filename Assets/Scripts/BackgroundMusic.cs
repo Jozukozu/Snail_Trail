@@ -12,7 +12,7 @@ public class BackgroundMusic : MonoBehaviour
         DontDestroyOnLoad(transform.gameObject);
         _audioSource = GetComponent<AudioSource>();
         float musicVolume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
-        float soundVolume = PlayerPrefs.GetFloat("soundVolume", 1.0f);
+        SetVolume(musicVolume);
         SceneManager.LoadScene("StartScene");
     }
 
