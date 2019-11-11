@@ -11,6 +11,7 @@ public class StartController : MonoBehaviour
         GameObject.FindGameObjectWithTag("Music").GetComponent<BackgroundMusic>().PlayMusic();
         float musicVolume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
         float soundVolume = PlayerPrefs.GetFloat("soundVolume", 1.0f);
+        GameObject.FindGameObjectWithTag("Music").GetComponent<BackgroundMusic>().SetVolume(musicVolume);
     }
 
 

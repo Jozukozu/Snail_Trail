@@ -40,12 +40,12 @@ public class SettingsController : MonoBehaviour
         }
         musicSlider.value = PlayerPrefs.GetFloat("musicVolume", 1.0f);
         soundSlider.value = PlayerPrefs.GetFloat("soundVolume", 1.0f);
-        //music.volume = musicSlider.value;
+        GameObject.FindGameObjectWithTag("Music").GetComponent<BackgroundMusic>().SetVolume(musicSlider.value);
     }
 
     void OnGUI()
     {
-        //music.volume = musicSlider.value;
+        GameObject.FindGameObjectWithTag("Music").GetComponent<BackgroundMusic>().SetVolume(musicSlider.value);
     }
 
     public void ResolutionDropdownValueChanged()
