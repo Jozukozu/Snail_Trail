@@ -101,7 +101,7 @@ public class SettingsController : MonoBehaviour
 
     public void SoundValueChanged()
     {
-        GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().SetVolume("Button Sound", soundSlider.value);
-        GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().PlayMusic("Button Sound");
+        sound.volume = soundSlider.value;
+        sound.Play();
     }
 }
