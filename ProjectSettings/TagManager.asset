@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Music
+  - Background Music
+  - Audio Controller
+  - Button Sound
   layers:
   - Default
   - TransparentFX
