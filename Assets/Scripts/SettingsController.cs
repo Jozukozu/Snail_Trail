@@ -22,13 +22,17 @@ public class SettingsController : MonoBehaviour
 
     void Start()
     {
-        GameObject.FindGameObjectWithTag("Music").GetComponent<BackgroundMusic>().PlayMusic();
+        musicSlider.value = PlayerPrefs.GetFloat("musicVolume", 1.0f);
+        soundSlider.value = PlayerPrefs.GetFloat("soundVolume", 1.0f);
+        GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().SetVolume("Background Music", musicSlider.value);
+        GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().PlayMusic("Background Music");
         width = Screen.width;
         height = Screen.height;
         resolution = width + "x" + height;
         var listAvailableStrings = resolutionDropdown.options.Select(option => option.text).ToList();
         resolutionDropdown.value = listAvailableStrings.IndexOf(resolution);
         Debug.Log(listAvailableStrings.IndexOf(resolution));
+
         if (Screen.fullScreen == true)
         {
             windowed = false;
@@ -38,14 +42,11 @@ public class SettingsController : MonoBehaviour
             windowed = true;
             windowedToggle.isOn = true;
         }
-        musicSlider.value = PlayerPrefs.GetFloat("musicVolume", 1.0f);
-        soundSlider.value = PlayerPrefs.GetFloat("soundVolume", 1.0f);
-        GameObject.FindGameObjectWithTag("Music").GetComponent<BackgroundMusic>().SetVolume(musicSlider.value);
     }
 
     void OnGUI()
     {
-        GameObject.FindGameObjectWithTag("Music").GetComponent<BackgroundMusic>().SetVolume(musicSlider.value);
+        GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().SetVolume("Background Music", musicSlider.value);
     }
 
     public void ResolutionDropdownValueChanged()
@@ -100,7 +101,7 @@ public class SettingsController : MonoBehaviour
 
     public void SoundValueChanged()
     {
-        sound.volume = soundSlider.value;
-        sound.Play();
+        GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().SetVolume("Button Sound", soundSlider.value);
+        GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().PlayMusic("Button Sound");
     }
 }
