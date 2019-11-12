@@ -12,7 +12,7 @@ public class SettingsController : MonoBehaviour
     public Toggle windowedToggle;
     public Slider musicSlider;
     public Slider soundSlider;
-    public AudioSource music;
+    public AudioSource sound;
     public GameObject dialog;
     private string[] strlist;
     private int width;
@@ -96,5 +96,11 @@ public class SettingsController : MonoBehaviour
     public void DialogExit()
     {
         SceneManager.LoadScene("StartScene");
+    }
+
+    public void SoundValueChanged()
+    {
+        sound.volume = soundSlider.value;
+        sound.Play();
     }
 }
