@@ -30,25 +30,21 @@ public class AudioController : MonoBehaviour
     {
         if(tag == "Background Music")
         {
-            PlayTagMusic(backgroundMusic);
+            if (backgroundMusic.isPlaying)
+            {
+                return;
+            }
+
+            backgroundMusic.Play();
         }
 
         else if(tag == "Button Sound")
         {
-            PlayTagMusic(buttonSound);
+            buttonSound.Play();
         }
         
     }
 
-    private void PlayTagMusic(AudioSource audio)
-    {
-        if (audio.isPlaying)
-        {
-            return;
-        }
-
-        audio.Play();
-    }
 
     public void StopMusic(string tag)
     {
