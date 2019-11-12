@@ -12,7 +12,6 @@ public class SettingsController : MonoBehaviour
     public Toggle windowedToggle;
     public Slider musicSlider;
     public Slider soundSlider;
-    public AudioSource sound;
     public GameObject dialog;
     private string[] strlist;
     private int width;
@@ -61,6 +60,7 @@ public class SettingsController : MonoBehaviour
 
     public void Apply()
     {
+        ButtonSound();
         try
         {
             width = int.Parse(strlist[0]);
@@ -83,6 +83,7 @@ public class SettingsController : MonoBehaviour
 
     public void Back()
     {
+        ButtonSound();
         if(!resolution.Equals(resolutionDropdown.captionText.text) || Screen.fullScreen == windowed || musicSlider.value != PlayerPrefs.GetFloat("musicVolume", 1.0f) || soundSlider.value != PlayerPrefs.GetFloat("soundVolume", 1.0f))
         {
             Debug.Log("Back button pressed");
@@ -96,12 +97,18 @@ public class SettingsController : MonoBehaviour
 
     public void DialogExit()
     {
+        ButtonSound();
         SceneManager.LoadScene("StartScene");
     }
 
     public void SoundValueChanged()
     {
-        sound.volume = soundSlider.value;
-        sound.Play();
+        GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().SetVolume("Button Sound", soundSlider.value);
+        GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().PlayMusic("Button Sound");
+    }
+
+    public void ButtonSound()
+    {
+        GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().PlayMusic("Button Sound");
     }
 }
