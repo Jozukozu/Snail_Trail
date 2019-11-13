@@ -9,6 +9,8 @@ public class LevelMenuController : MonoBehaviour
 
     public Text levelName;
     public Button startButton;
+    public Text highscoreLabel;
+    public Text highscore;
 
     private int levelIndex;
 
@@ -41,6 +43,8 @@ public class LevelMenuController : MonoBehaviour
         ButtonSound();
         levelName.text = name.text;
 
+        highscoreLabel.gameObject.SetActive(true);
+        highscore.gameObject.SetActive(true);
         startButton.interactable = true;
     }
 

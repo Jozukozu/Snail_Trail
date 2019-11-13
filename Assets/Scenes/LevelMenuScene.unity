@@ -538,12 +538,12 @@ GameObject:
   - component: {fileID: 687900152}
   - component: {fileID: 687900151}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Highscore label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &687900150
 RectTransform:
   m_ObjectHideFlags: 0
@@ -887,12 +887,12 @@ GameObject:
   - component: {fileID: 1107909011}
   - component: {fileID: 1107909010}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: Highscore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1107909009
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1504,6 +1504,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelName: {fileID: 1303783657}
   startButton: {fileID: 895742510}
+  highscoreLabel: {fileID: 687900151}
+  highscore: {fileID: 1107909010}
 --- !u!4 &1798146248
 Transform:
   m_ObjectHideFlags: 0
