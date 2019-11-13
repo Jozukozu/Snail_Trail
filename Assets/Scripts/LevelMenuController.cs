@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class StartController : MonoBehaviour
+public class LevelMenuController : MonoBehaviour
 {
 
+    public Text levelName;
+    public Button startButton;
+
+    private int levelIndex;
 
     void Start()
     {
@@ -21,23 +26,32 @@ public class StartController : MonoBehaviour
     public void StartButton()
     {
         ButtonSound();
-        SceneManager.LoadScene("LevelMenuScene");
+        Debug.Log("Game started, level " + levelIndex);
+        //SceneManager.LoadScene(level);
     }
 
-    public void SettingsButton()
+    public void BackButton()
     {
         ButtonSound();
-        SceneManager.LoadScene("SettingScene");
+        SceneManager.LoadScene("StartScene");
     }
 
-    public void ExitButton()
+    public void LevelButton(Text name)
     {
         ButtonSound();
-        Application.Quit();
+        levelName.text = name.text;
+
+        startButton.interactable = true;
+    }
+
+    public void LevelButton(int index)
+    {
+        levelIndex = index;
     }
 
     public void ButtonSound()
     {
         GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().PlayMusic("Button Sound");
     }
+
 }
