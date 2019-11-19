@@ -6,15 +6,29 @@ public class CameraController : MonoBehaviour
 {
 
     public GameObject snail;
+    public GameObject shell;
     private Vector3 offset;
 
     void Start()
     {
-        offset = transform.position - snail.transform.position;
+        if(snail.activeSelf)
+        {
+            offset = transform.position - snail.transform.position;
+        } else
+        {
+            offset = transform.position - shell.transform.position;
+        }
     }
 
     void LateUpdate()
     {
-        transform.position = snail.transform.position + offset;
+        if(snail.activeSelf)
+        {
+            transform.position = snail.transform.position + offset;
+        }
+        else
+        {
+            transform.position = shell.transform.position + offset;
+        }
     }
 }
