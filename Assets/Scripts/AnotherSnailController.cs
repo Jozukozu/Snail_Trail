@@ -37,14 +37,14 @@ public class AnotherSnailController : MonoBehaviour
             Vector3 averageNormal = (leftHitInfo.normal + rightHitInfo.normal) / 2;
             Vector3 averagePoint = (leftHitInfo.point + rightHitInfo.point) / 2;
             Vector3 correctedPoint = new Vector3(averagePoint.z, averagePoint.y, averagePoint.x);
-            Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, averageNormal);
+            Quaternion targetRotation = Quaternion.FromToRotation(Vector3.right, averageNormal);
             Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);
 
 
-            transform.localRotation = Quaternion.Euler(finalRotation.eulerAngles.z, 0, 0);
+            transform.localRotation = Quaternion.Euler(-finalRotation.eulerAngles.z, 90, 90);
 
 
-            transform.localPosition = correctedPoint + transform.up * 0.5f;
+            transform.localPosition = averagePoint + transform.forward * 0.5f;
         }
     }
 
@@ -56,30 +56,30 @@ public class AnotherSnailController : MonoBehaviour
         Ray rightRay;
         Ray leftRay;
 
-        Vector3 flip = new Vector3(transform.localPosition.z, transform.localPosition.y, transform.localPosition.x);
+        Vector3 flip = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
 
 
 
         if (movementDirection.x > 0)
         {
-            rightRay = new Ray(flip + (transform.forward * speed) + transform.localScale.y / 2 * transform.forward, -transform.up);
-            leftRay = new Ray(flip + (transform.forward * speed) - transform.localScale.y / 2 * transform.forward, -transform.up);
-            Debug.DrawRay(flip + (transform.forward * speed) + transform.localScale.y / 2 * transform.forward, -transform.up, Color.green);
-            Debug.DrawRay(flip + (transform.forward * speed) - transform.localScale.y / 2 * transform.forward, -transform.up, Color.red);
+            rightRay = new Ray(flip + (-transform.right * speed) + transform.localScale.y * transform.right, -transform.forward);
+            leftRay = new Ray(flip + (-transform.right * speed) - transform.localScale.y * transform.right, -transform.forward);
+            Debug.DrawRay(flip + (-transform.right * speed) + transform.localScale.y * transform.right, -transform.forward, Color.green);
+            Debug.DrawRay(flip + (-transform.right * speed) - transform.localScale.y * transform.right, -transform.forward, Color.red);
         }
         else if (movementDirection.x < 0)
         {
-            rightRay = new Ray(flip + (-transform.forward * speed) + transform.localScale.y / 2 * transform.forward, -transform.up);
-            leftRay = new Ray(flip + (-transform.forward * speed) - transform.localScale.y / 2 * transform.forward, -transform.up);
-            Debug.DrawRay(flip + (-transform.forward * speed) + transform.localScale.y / 2 * transform.forward, -transform.up, Color.green);
-            Debug.DrawRay(flip + (-transform.forward * speed) - transform.localScale.y / 2 * transform.forward, -transform.up, Color.red);
+            rightRay = new Ray(flip + (transform.right * speed) + transform.localScale.y * transform.right, -transform.forward);
+            leftRay = new Ray(flip + (transform.right * speed) - transform.localScale.y * transform.right, -transform.forward);
+            Debug.DrawRay(flip + (transform.right * speed) + transform.localScale.y * transform.right, -transform.forward, Color.green);
+            Debug.DrawRay(flip + (transform.right * speed) - transform.localScale.y * transform.right, -transform.forward, Color.red);
         }
         else
         {
-            rightRay = new Ray(flip + transform.localScale.y / 2 * transform.forward, -transform.up);
-            leftRay = new Ray(flip - transform.localScale.y / 2 * transform.forward, -transform.up);
-            Debug.DrawRay(flip + transform.localScale.y / 2 * transform.forward, -transform.up, Color.green);
-            Debug.DrawRay(flip - transform.localScale.y / 2 * transform.forward, -transform.up, Color.red);
+            rightRay = new Ray(flip + transform.localScale.y * transform.right, -transform.forward);
+            leftRay = new Ray(flip - transform.localScale.y * transform.right, -transform.forward);
+            Debug.DrawRay(flip + transform.localScale.y * transform.right, -transform.forward, Color.green);
+            Debug.DrawRay(flip - transform.localScale.y * transform.right, -transform.forward, Color.red);
         }
         bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, 2, LayerMask.GetMask("Ground"));
         bool leftCast = Physics.Raycast(leftRay, out leftHitInfo, 2, LayerMask.GetMask("Ground"));
