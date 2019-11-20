@@ -53,24 +53,24 @@ public class AnotherSnailController : MonoBehaviour
         Ray leftRay;
         if (movementDirection.x > 0)
         {
-            rightRay = new Ray(transform.localPosition + (transform.right * speed) + transform.localScale.x / 2 * transform.right, -transform.up);
-            leftRay = new Ray(transform.localPosition + (transform.right * speed) - transform.localScale.x / 2 * transform.right, -transform.up);
-            Debug.DrawRay(transform.localPosition + (transform.right * speed) + transform.localScale.x / 2 * transform.right, -transform.up, Color.green);
-            Debug.DrawRay(transform.localPosition + (transform.right * speed) - transform.localScale.x / 2 * transform.right, -transform.up, Color.red);
+            rightRay = new Ray(transform.localPosition + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up);
+            leftRay = new Ray(transform.localPosition + (transform.right * speed) - transform.localScale.x / 8 * transform.right, -transform.up);
+            Debug.DrawRay(transform.localPosition + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up, Color.green);
+            Debug.DrawRay(transform.localPosition + (transform.right * speed) - transform.localScale.x / 8 * transform.right, -transform.up, Color.red);
         }
         else if (movementDirection.x < 0)
         {
-            rightRay = new Ray(transform.localPosition + (-transform.right * speed) + transform.localScale.x / 2 * transform.right, -transform.up);
-            leftRay = new Ray(transform.localPosition + (-transform.right * speed) - transform.localScale.x / 2 * transform.right, -transform.up);
-            Debug.DrawRay(transform.localPosition + (-transform.right * speed) + transform.localScale.x / 2 * transform.right, -transform.up, Color.green);
-            Debug.DrawRay(transform.localPosition + (-transform.right * speed) - transform.localScale.x / 2 * transform.right, -transform.up, Color.red);
+            rightRay = new Ray(transform.localPosition + (-transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up);
+            leftRay = new Ray(transform.localPosition + (-transform.right * speed) - transform.localScale.x / 8 * transform.right, -transform.up);
+            Debug.DrawRay(transform.localPosition + (-transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up, Color.green);
+            Debug.DrawRay(transform.localPosition + (-transform.right * speed) - transform.localScale.x / 8 * transform.right, -transform.up, Color.red);
         }
         else
         {
-            rightRay = new Ray(transform.localPosition + transform.localScale.x / 2 * transform.right, -transform.up);
-            leftRay = new Ray(transform.localPosition - transform.localScale.x / 2 * transform.right, -transform.up);
-            Debug.DrawRay(transform.localPosition + transform.localScale.x / 2 * transform.right, -transform.up, Color.green);
-            Debug.DrawRay(transform.localPosition - transform.localScale.x / 2 * transform.right, -transform.up, Color.red);
+            rightRay = new Ray(transform.localPosition + transform.localScale.x / 8 * transform.right, -transform.up);
+            leftRay = new Ray(transform.localPosition - transform.localScale.x / 8 * transform.right, -transform.up);
+            Debug.DrawRay(transform.localPosition + transform.localScale.x / 8 * transform.right, -transform.up, Color.green);
+            Debug.DrawRay(transform.localPosition - transform.localScale.x / 8 * transform.right, -transform.up, Color.red);
         }
         bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, 2, LayerMask.GetMask("Ground"));
         bool leftCast = Physics.Raycast(leftRay, out leftHitInfo, 2, LayerMask.GetMask("Ground"));
