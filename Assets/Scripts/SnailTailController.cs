@@ -28,7 +28,7 @@ public class SnailTailController : MonoBehaviour
     }
 
 
-    void FixedUpdate()
+    void Update()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         Vector3 movement;
