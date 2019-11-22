@@ -4,13 +4,31 @@ using UnityEngine;
 
 public class SnailTailController : MonoBehaviour
 {
-    public float speed;
     public GameObject root;
     public GameObject previousBone;
+    protected Vector3 averageNormal;
+    private SnailTailController snailTailController;
+    private AnotherSnailController anotherSnailController;
+    private bool isRoot;
+
+    void Start()
+    {
+        if (previousBone.GetComponent<SnailTailController>())
+        {
+            snailTailController = previousBone.GetComponent<SnailTailController>();
+            isRoot = false;
+        }
+
+        else if (previousBone.GetComponent<AnotherSnailController>())
+        {
+            anotherSnailController = previousBone.GetComponent<AnotherSnailController>();
+            isRoot = true;
+        }
+
+    }
 
 
-
-    void Update()
+    void FixedUpdate()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         Vector3 movement;
@@ -29,97 +47,75 @@ public class SnailTailController : MonoBehaviour
     private void UpdatePlayerTransform(Vector3 movementDirection)
     {
         RaycastHit rightHitInfo;
-        RaycastHit previousInfo;
 
-
-        if (GetRaycastDownAtNewPosition(movementDirection, out rightHitInfo) && PreviousBoneGetRaycastDownAtNewPosition(movementDirection, out previousInfo))
+        if (GetRaycastDownAtNewPosition(movementDirection, out rightHitInfo))
         {
 
-            if (rightHitInfo.normal != previousInfo.normal)
-            {
-                Vector3 averageNormal = rightHitInfo.normal;
-                Vector3 averagePoint = rightHitInfo.point;
-                Vector3 correctedPoint = new Vector3(averagePoint.z, averagePoint.y, averagePoint.x);
-                Quaternion targetRotation = Quaternion.FromToRotation(Vector3.forward, averageNormal);
-                Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);
-                Debug.Log(gameObject.name + " righthitinfo: " + rightHitInfo + " averagenormal: " + averageNormal + " targetrotation: " + targetRotation + " finalrotation " + finalRotation);
+            Vector3 previousNormal;
+            averageNormal = rightHitInfo.normal;
 
-                transform.localRotation = Quaternion.Euler((finalRotation.eulerAngles.z), 0, 0);
+            if (isRoot)
+            {
+                previousNormal = anotherSnailController.averageNormal;
             }
 
             else
             {
-                transform.localRotation = Quaternion.Euler(0, 0, 0);
+                previousNormal = snailTailController.averageNormal;
             }
 
-            transform.localPosition = transform.forward;
+
+            if (previousNormal != averageNormal)
+            {
+                Debug.Log("not same normals, root: " + previousNormal + "own: " + averageNormal);
+                Vector3 averagePoint = rightHitInfo.point;
+                Quaternion targetRotation = Quaternion.FromToRotation(/*Vector3.up*/averageNormal, previousNormal);
+                Debug.Log("targetrotation: " + targetRotation);
+                Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);
+                Debug.Log("finalRotation: " + finalRotation);
+                transform.localRotation = Quaternion.Euler(0, 0, -finalRotation.eulerAngles.z);
+                Debug.Log("transforming rotation: " + finalRotation.eulerAngles.z);
+            }
+
+            else
+            {
+                Debug.Log("same normals, root: " + previousNormal + "own: " + averageNormal);
+                transform.localRotation = Quaternion.Euler(0, 0, 0);
+            }
         }
+        else
+        {
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+        }
+
     }
 
 
     private bool GetRaycastDownAtNewPosition(Vector3 movementDirection, out RaycastHit rightHitInfo)
     {
         Vector3 newPosition = transform.position;
-        Vector3 halfX = new Vector3(transform.localScale.x / 2, 0, 0);
-
-        Vector3 offset = new Vector3(0, 0, 0);
-        Vector3 rootAxis = new Vector3(root.transform.localPosition.x, root.transform.localPosition.y, root.transform.localPosition.z);
-        Ray rightRay;
-
-        if (movementDirection.x > 0)
-        {
-            rightRay = new Ray(newPosition, -transform.forward);
-            Debug.DrawRay(newPosition, -transform.forward, Color.green);
-
-        }
-        else if (movementDirection.x < 0)
-        {
-            rightRay = new Ray(newPosition, -transform.forward);
-            Debug.DrawRay(newPosition, -transform.forward, Color.green);
-        }
-        else
-        {
-            rightRay = new Ray(newPosition, -transform.forward);
-            Debug.DrawRay(newPosition, -transform.forward, Color.green);
-        }
-        bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, 2, LayerMask.GetMask("Ground"));
-
-
-
-        if (rightCast)
-        {
-            return true;
-        }
-
-
-        return false;
-    }
-
-
-
-    private bool PreviousBoneGetRaycastDownAtNewPosition(Vector3 movementDirection, out RaycastHit rightHitInfo)
-    {
-        Vector3 newPosition = previousBone.transform.position;
 
         Ray rightRay;
 
         if (movementDirection.x > 0)
         {
-            rightRay = new Ray(newPosition, -previousBone.transform.forward);
-            Debug.DrawRay(newPosition, -previousBone.transform.forward, Color.green);
+            rightRay = new Ray(newPosition, -transform.up);
+            //rightRay = new Ray(transform.localPosition + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up);
+            Debug.DrawRay(newPosition, -transform.up, Color.green);
+            //Debug.DrawRay(transform.localPosition + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up, Color.green);
 
         }
         else if (movementDirection.x < 0)
         {
-            rightRay = new Ray(newPosition, -previousBone.transform.forward);
-            Debug.DrawRay(newPosition, -previousBone.transform.forward, Color.green);
+            rightRay = new Ray(newPosition, -transform.up);
+            Debug.DrawRay(newPosition, -transform.up, Color.green);
         }
         else
         {
-            rightRay = new Ray(newPosition, -previousBone.transform.forward);
-            Debug.DrawRay(newPosition, -previousBone.transform.forward, Color.green);
+            rightRay = new Ray(newPosition, -transform.up);
+            Debug.DrawRay(newPosition, -transform.up, Color.green);
         }
-        bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, 2, LayerMask.GetMask("Ground"));
+        bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, 1, LayerMask.GetMask("Ground"));
 
 
 

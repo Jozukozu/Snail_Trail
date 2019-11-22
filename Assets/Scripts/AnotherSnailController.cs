@@ -6,6 +6,8 @@ public class AnotherSnailController : MonoBehaviour
 {
 
     public float speed;
+    public Vector3 averageNormal;
+
 
     void Update()
     {
@@ -20,6 +22,7 @@ public class AnotherSnailController : MonoBehaviour
             movement = new Vector3(-moveHorizontal, 0.0f, 0.0f);
         }
         UpdatePlayerTransform(movement);
+
     }
 
 
@@ -31,7 +34,14 @@ public class AnotherSnailController : MonoBehaviour
 
         if (GetRaycastDownAtNewPosition(movementDirection, out rightHitInfo, out leftHitInfo))
         {
-            Vector3 averageNormal = (leftHitInfo.normal + rightHitInfo.normal) / 2;
+            Rigidbody[] allRBs = GetComponentsInChildren<Rigidbody>();
+            for (int r = 0; r < allRBs.Length; r++)
+            {
+                allRBs[r].useGravity = false;
+                allRBs[r].isKinematic = true;
+            }
+            averageNormal = (leftHitInfo.normal + rightHitInfo.normal) / 2;
+            Debug.Log("real root: " + averageNormal);
             Vector3 averagePoint = (leftHitInfo.point + rightHitInfo.point) / 2;
             Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, averageNormal);
             Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);
@@ -42,13 +52,23 @@ public class AnotherSnailController : MonoBehaviour
 
             transform.localPosition = averagePoint + transform.up * 0.25f;
         }
+
+        else
+        {
+            Rigidbody[] allRBs = GetComponentsInChildren<Rigidbody>();
+            for (int r = 0; r < allRBs.Length; r++)
+            {
+                allRBs[r].useGravity = true;
+                allRBs[r].isKinematic = false;
+            }
+
+        }
     }
 
 
     private bool GetRaycastDownAtNewPosition(Vector3 movementDirection, out RaycastHit rightHitInfo, out RaycastHit leftHitInfo)
     {
-        Vector3 newPosition = transform.localPosition;
-        Vector3 halfX = new Vector3(transform.localScale.x / 2, 0, 0);
+
         Ray rightRay;
         Ray leftRay;
         if (movementDirection.x > 0)
