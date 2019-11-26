@@ -96,26 +96,27 @@ public class SnailTailController : MonoBehaviour
         Vector3 newPosition = transform.position;
 
         Ray rightRay;
+        float rayLength = 0.3f;
 
         if (movementDirection.x > 0)
         {
             rightRay = new Ray(newPosition, -transform.up);
             //rightRay = new Ray(transform.localPosition + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up);
-            Debug.DrawRay(newPosition, -transform.up, Color.green);
+            Debug.DrawRay(newPosition, -transform.up * rayLength, Color.green);
             //Debug.DrawRay(transform.localPosition + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up, Color.green);
 
         }
         else if (movementDirection.x < 0)
         {
             rightRay = new Ray(newPosition, -transform.up);
-            Debug.DrawRay(newPosition, -transform.up, Color.green);
+            Debug.DrawRay(newPosition, -transform.up * rayLength, Color.green);
         }
         else
         {
             rightRay = new Ray(newPosition, -transform.up);
-            Debug.DrawRay(newPosition, -transform.up, Color.green);
+            Debug.DrawRay(newPosition, -transform.up * rayLength, Color.green);
         }
-        bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, 1, LayerMask.GetMask("Ground"));
+        bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, rayLength, LayerMask.GetMask("Ground"));
 
 
 
