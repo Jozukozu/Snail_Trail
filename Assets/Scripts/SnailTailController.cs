@@ -104,26 +104,41 @@ public class SnailTailController : MonoBehaviour
         Vector3 newPosition = transform.position;
 
         Ray rightRay;
+        float rayLength = 0.3f;
 
         if (movementDirection.x > 0)
         {
             rightRay = new Ray(newPosition, -transform.up);
             //rightRay = new Ray(transform.localPosition + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up);
+<<<<<<< HEAD
             //Debug.DrawRay(newPosition, -transform.up, Color.green);
+=======
+            Debug.DrawRay(newPosition, -transform.up * rayLength, Color.green);
+>>>>>>> 7cbd079ff785978e44cfd1529b443eeca957858b
             //Debug.DrawRay(transform.localPosition + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up, Color.green);
 
         }
         else if (movementDirection.x < 0)
         {
             rightRay = new Ray(newPosition, -transform.up);
+<<<<<<< HEAD
             //Debug.DrawRay(newPosition, -transform.up, Color.green);
+=======
+            Debug.DrawRay(newPosition, -transform.up * rayLength, Color.green);
+>>>>>>> 7cbd079ff785978e44cfd1529b443eeca957858b
         }
         else
         {
             rightRay = new Ray(newPosition, -transform.up);
+<<<<<<< HEAD
             Debug.DrawRay(newPosition, -transform.up * 0.3f, Color.green);
         }
         bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, 0.3f, LayerMask.GetMask("Ground"));
+=======
+            Debug.DrawRay(newPosition, -transform.up * rayLength, Color.green);
+        }
+        bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, rayLength, LayerMask.GetMask("Ground"));
+>>>>>>> 7cbd079ff785978e44cfd1529b443eeca957858b
 
 
 
