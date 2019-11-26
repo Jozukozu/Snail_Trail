@@ -10,6 +10,11 @@ public class SnailTailController : MonoBehaviour
     private SnailTailController snailTailController;
     private AnotherSnailController anotherSnailController;
     private bool isRoot;
+    public float rayLength;
+    public bool touchingGround;
+    public bool colliderTouchingGround;
+    public float offset;
+    private bool childTouchesGround;
 
     void Start()
     {
@@ -24,11 +29,10 @@ public class SnailTailController : MonoBehaviour
             anotherSnailController = previousBone.GetComponent<AnotherSnailController>();
             isRoot = true;
         }
-
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         Vector3 movement;
@@ -50,9 +54,9 @@ public class SnailTailController : MonoBehaviour
 
         if (GetRaycastDownAtNewPosition(movementDirection, out rightHitInfo))
         {
-            Rigidbody rigidBody = GetComponent<Rigidbody>();
-            rigidBody.useGravity = false;
-            rigidBody.isKinematic = true;
+            //Rigidbody rigidBody = GetComponent<Rigidbody>();
+            //rigidBody.useGravity = false;
+            //rigidBody.isKinematic = true;
             Vector3 previousNormal;
             averageNormal = rightHitInfo.normal;
 
@@ -75,7 +79,7 @@ public class SnailTailController : MonoBehaviour
                 //Debug.Log("targetrotation: " + targetRotation);
                 Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);
                 //Debug.Log("finalRotation: " + finalRotation);
-                transform.localRotation = Quaternion.Euler(0, 0, -finalRotation.eulerAngles.z);
+                transform.localRotation = Quaternion.Euler(0, 0, -(finalRotation.eulerAngles.z + offset));
                 //Debug.Log("transforming rotation: " + finalRotation.eulerAngles.z);
             }
 
@@ -87,13 +91,28 @@ public class SnailTailController : MonoBehaviour
         }
         else
         {
+            //Rigidbody rigidBody = GetComponent<Rigidbody>();
+            //rigidBody.useGravity = true;
+            //rigidBody.isKinematic = false;
             //transform.localRotation = Quaternion.Euler(0, 0, 0);
-            Rigidbody[] allRBs = GetComponentsInChildren<Rigidbody>();
+            SnailTailController[] allRBs = GetComponentsInChildren<SnailTailController>();
+            childTouchesGround = false;
             for (int r = 0; r < allRBs.Length; r++)
             {
-                allRBs[r].useGravity = true;
-                allRBs[r].isKinematic = false;
+                if(allRBs[r].touchingGround)
+                {
+                    childTouchesGround = true;
+                }
             }
+            if(!childTouchesGround && !TailEndController.touchingGround)
+            {
+                if(transform.localEulerAngles.z < 50.0f)
+                {
+                    transform.Rotate(new Vector3(0.0f, 0.0f, 1.0f), Space.Self);
+                }
+                
+            }
+            
         }
 
     }
@@ -104,51 +123,57 @@ public class SnailTailController : MonoBehaviour
         Vector3 newPosition = transform.position;
 
         Ray rightRay;
-        float rayLength = 0.3f;
 
         if (movementDirection.x > 0)
         {
             rightRay = new Ray(newPosition, -transform.up);
             //rightRay = new Ray(transform.localPosition + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up);
-<<<<<<< HEAD
             //Debug.DrawRay(newPosition, -transform.up, Color.green);
-=======
-            Debug.DrawRay(newPosition, -transform.up * rayLength, Color.green);
->>>>>>> 7cbd079ff785978e44cfd1529b443eeca957858b
+            Debug.DrawRay(newPosition, -transform.up * (rayLength + 0.02f), Color.green);
             //Debug.DrawRay(transform.localPosition + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up, Color.green);
 
         }
         else if (movementDirection.x < 0)
         {
             rightRay = new Ray(newPosition, -transform.up);
-<<<<<<< HEAD
             //Debug.DrawRay(newPosition, -transform.up, Color.green);
-=======
-            Debug.DrawRay(newPosition, -transform.up * rayLength, Color.green);
->>>>>>> 7cbd079ff785978e44cfd1529b443eeca957858b
+            Debug.DrawRay(newPosition, -transform.up * (rayLength + 0.02f), Color.green);
         }
         else
         {
             rightRay = new Ray(newPosition, -transform.up);
-<<<<<<< HEAD
-            Debug.DrawRay(newPosition, -transform.up * 0.3f, Color.green);
+            Debug.DrawRay(newPosition, -transform.up * (rayLength + 0.02f), Color.green);
         }
-        bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, 0.3f, LayerMask.GetMask("Ground"));
-=======
-            Debug.DrawRay(newPosition, -transform.up * rayLength, Color.green);
-        }
-        bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, rayLength, LayerMask.GetMask("Ground"));
->>>>>>> 7cbd079ff785978e44cfd1529b443eeca957858b
+        bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, (rayLength + 0.02f), LayerMask.GetMask("Ground"));
 
 
 
         if (rightCast)
         {
+            touchingGround = true;
             return true;
         }
 
-
+        touchingGround = false;
         return false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.gameObject.layer == LayerMask.GetMask("LAYER_NAME"))
+        {
+            colliderTouchingGround = true;
+            Debug.Log("touching ground");
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.gameObject.layer == LayerMask.GetMask("LAYER_NAME"))
+        {
+            colliderTouchingGround = false;
+            Debug.Log("not touching ground");
+        }
     }
 
 }

@@ -7,9 +7,10 @@ public class AnotherSnailController : MonoBehaviour
 
     public float speed;
     public Vector3 averageNormal;
+    public bool touchingGround;
 
 
-    void Update()
+    void FixedUpdate()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         Vector3 movement;
@@ -71,7 +72,7 @@ public class AnotherSnailController : MonoBehaviour
 
         Ray rightRay;
         Ray leftRay;
-        float rayLength = 0.3f;
+        float rayLength = 1f;
         if (movementDirection.x > 0)
         {
             rightRay = new Ray(transform.position + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up);
@@ -99,10 +100,11 @@ public class AnotherSnailController : MonoBehaviour
 
         if (rightCast && leftCast)
         {
+            touchingGround = true;
             return true;
         }
 
-
+        touchingGround = false;
         return false;
     }
 

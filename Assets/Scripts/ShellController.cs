@@ -22,19 +22,8 @@ public class ShellController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void LateUpdate()
     {
-
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            shellVisible = !shellVisible;
-            Debug.Log("space pressed");
-        }
-
         if (shellVisible)
         {
             shell.GetComponent<SphereCollider>().enabled = true;
@@ -51,18 +40,32 @@ public class ShellController : MonoBehaviour
         }
         else
         {
-            RaycastHit rightHitInfo;
-            Vector3 newPosition = bone.transform.position;
-            Ray rightRay = new Ray(newPosition, -bone.transform.up);
-            Debug.DrawRay(newPosition, -bone.transform.up * 0.4f, Color.green);
-            Physics.Raycast(rightRay, out rightHitInfo, 0.4f, LayerMask.GetMask("Ground"));
-            Vector3 shellPoint = rightHitInfo.point + rightHitInfo.normal * 0.8f;
+            Vector3 shellPoint = bone.transform.position + transform.TransformVector(0.0f, bone.transform.localPosition.y + 0.5f, 0.0f);
             shell.GetComponent<SphereCollider>().enabled = false;
             rigidBody.useGravity = false;
             rigidBody.isKinematic = true;
             snailBody.SetActive(true);
             shell.transform.rotation = bone.transform.rotation;
             shell.transform.position = shellPoint;
+        }
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyUp(shellMode))
+        {
+            shellVisible = !shellVisible;
+            resetSnail();
+            Debug.Log("space pressed");
+        }
+    }
+
+    private void resetSnail()
+    {
+        GameObject[] snailBones = GameObject.FindGameObjectsWithTag("Bone Object");
+        for (int i = 0; i < snailBones.Length; i++)
+        {
+            snailBones[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
     }
 
