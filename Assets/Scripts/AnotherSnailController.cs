@@ -41,7 +41,7 @@ public class AnotherSnailController : MonoBehaviour
                 allRBs[r].isKinematic = true;
             }
             averageNormal = (leftHitInfo.normal + rightHitInfo.normal) / 2;
-            Debug.Log("real root: " + averageNormal);
+            //Debug.Log("real root: " + averageNormal);
             Vector3 averagePoint = (leftHitInfo.point + rightHitInfo.point) / 2;
             Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, averageNormal);
             Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);

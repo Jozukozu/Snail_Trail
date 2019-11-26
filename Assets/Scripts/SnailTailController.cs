@@ -50,7 +50,9 @@ public class SnailTailController : MonoBehaviour
 
         if (GetRaycastDownAtNewPosition(movementDirection, out rightHitInfo))
         {
-
+            Rigidbody rigidBody = GetComponent<Rigidbody>();
+            rigidBody.useGravity = false;
+            rigidBody.isKinematic = true;
             Vector3 previousNormal;
             averageNormal = rightHitInfo.normal;
 
@@ -67,25 +69,31 @@ public class SnailTailController : MonoBehaviour
 
             if (previousNormal != averageNormal)
             {
-                Debug.Log("not same normals, root: " + previousNormal + "own: " + averageNormal);
+                Debug.Log(this + "not same normals, root: " + previousNormal + "own: " + averageNormal);
                 Vector3 averagePoint = rightHitInfo.point;
                 Quaternion targetRotation = Quaternion.FromToRotation(/*Vector3.up*/averageNormal, previousNormal);
-                Debug.Log("targetrotation: " + targetRotation);
+                //Debug.Log("targetrotation: " + targetRotation);
                 Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);
-                Debug.Log("finalRotation: " + finalRotation);
+                //Debug.Log("finalRotation: " + finalRotation);
                 transform.localRotation = Quaternion.Euler(0, 0, -finalRotation.eulerAngles.z);
-                Debug.Log("transforming rotation: " + finalRotation.eulerAngles.z);
+                //Debug.Log("transforming rotation: " + finalRotation.eulerAngles.z);
             }
 
             else
             {
-                Debug.Log("same normals, root: " + previousNormal + "own: " + averageNormal);
+                //Debug.Log("same normals, root: " + previousNormal + "own: " + averageNormal);
                 transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
         }
         else
         {
-            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            //transform.localRotation = Quaternion.Euler(0, 0, 0);
+            Rigidbody[] allRBs = GetComponentsInChildren<Rigidbody>();
+            for (int r = 0; r < allRBs.Length; r++)
+            {
+                allRBs[r].useGravity = true;
+                allRBs[r].isKinematic = false;
+            }
         }
 
     }
@@ -101,21 +109,21 @@ public class SnailTailController : MonoBehaviour
         {
             rightRay = new Ray(newPosition, -transform.up);
             //rightRay = new Ray(transform.localPosition + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up);
-            Debug.DrawRay(newPosition, -transform.up, Color.green);
+            //Debug.DrawRay(newPosition, -transform.up, Color.green);
             //Debug.DrawRay(transform.localPosition + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up, Color.green);
 
         }
         else if (movementDirection.x < 0)
         {
             rightRay = new Ray(newPosition, -transform.up);
-            Debug.DrawRay(newPosition, -transform.up, Color.green);
+            //Debug.DrawRay(newPosition, -transform.up, Color.green);
         }
         else
         {
             rightRay = new Ray(newPosition, -transform.up);
-            Debug.DrawRay(newPosition, -transform.up, Color.green);
+            Debug.DrawRay(newPosition, -transform.up * 0.3f, Color.green);
         }
-        bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, 1, LayerMask.GetMask("Ground"));
+        bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, 0.3f, LayerMask.GetMask("Ground"));
 
 
 
