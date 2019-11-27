@@ -534,9 +534,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9988378a69127424b93bbb943183b391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 25
-  snail: {fileID: 414225335}
-  rayHeight: 6
 --- !u!54 &414225338
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1839,7 +1836,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 785726438}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -5495902117074765545, guid: 8d9aa25949403eb4e8bf58413598103c, type: 3}
 --- !u!54 &785726444
 Rigidbody:
   m_ObjectHideFlags: 0
