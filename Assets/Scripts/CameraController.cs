@@ -6,6 +6,7 @@ public class CameraController : MonoBehaviour
 {
 
     public GameObject snail;
+    public GameObject snailRoot;
     public GameObject shell;
     private Vector3 offset;
 
@@ -13,7 +14,7 @@ public class CameraController : MonoBehaviour
     {
         if(snail.activeSelf)
         {
-            offset = transform.position - snail.transform.position;
+            offset = transform.position - snailRoot.transform.position;
         } else
         {
             offset = transform.position - shell.transform.position;
@@ -24,7 +25,7 @@ public class CameraController : MonoBehaviour
     {
         if(snail.activeSelf)
         {
-            transform.position = snail.transform.position + offset;
+            transform.position = snailRoot.transform.position + offset;
         }
         else
         {

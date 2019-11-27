@@ -15,6 +15,7 @@ public class SnailTailController : MonoBehaviour
     public bool colliderTouchingGround;
     public float offset;
     private bool childTouchesGround;
+    private float moveHorizontal;
 
     void Start()
     {
@@ -34,7 +35,7 @@ public class SnailTailController : MonoBehaviour
 
     void FixedUpdate()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
+        moveHorizontal = Input.GetAxis("Horizontal");
         Vector3 movement;
         if (transform.localRotation.z < 90 && transform.localRotation.z > -90)
         {
@@ -79,7 +80,14 @@ public class SnailTailController : MonoBehaviour
                 //Debug.Log("targetrotation: " + targetRotation);
                 Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);
                 //Debug.Log("finalRotation: " + finalRotation);
-                transform.localRotation = Quaternion.Euler(0, 0, -(finalRotation.eulerAngles.z + offset));
+                if(moveHorizontal >= 0)
+                {
+                    transform.localRotation = Quaternion.Euler(0, 0, -(finalRotation.eulerAngles.z + offset));
+                }
+                else
+                {
+                    transform.localRotation = Quaternion.Euler(0, 0, (finalRotation.eulerAngles.z + offset));
+                }
                 //Debug.Log("transforming rotation: " + finalRotation.eulerAngles.z);
             }
 

@@ -13,6 +13,8 @@ public class ShellController : MonoBehaviour
     public GameObject snailBody;
     private bool onGround;
     public GameObject bone;
+    private float moveHorizontal;
+    private bool facingRight;
 
     // Start is called before the first frame update
     void Start()
@@ -30,10 +32,17 @@ public class ShellController : MonoBehaviour
             rigidBody.useGravity = true;
             rigidBody.isKinematic = false;
             snailBody.SetActive(false);
-            snail.transform.position = shell.transform.position + new Vector3(0.8f, -0.4f, 0.0f);
-            if(onGround)
+            if(facingRight)
             {
-                float moveHorizontal = Input.GetAxis("Horizontal");
+                snail.transform.position = shell.transform.position + new Vector3(0.8f, -0.4f, 0.0f);
+            }
+            else
+            {
+                snail.transform.position = shell.transform.position + new Vector3(-0.8f, -0.4f, 0.0f);
+            }
+            if (onGround)
+            {
+                moveHorizontal = Input.GetAxis("Horizontal");
                 Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0.0f);
                 rigidBody.AddForce(movement * speed);
             }
@@ -55,17 +64,39 @@ public class ShellController : MonoBehaviour
         if (Input.GetKeyUp(shellMode))
         {
             shellVisible = !shellVisible;
-            resetSnail();
+            if(!shellVisible)
+            {
+                resetSnail();
+            }
             Debug.Log("space pressed");
+        }
+        if (moveHorizontal > 0)
+        {
+            facingRight = true;
+        }
+        else if(moveHorizontal < 0)
+        {
+            facingRight = false;
         }
     }
 
     private void resetSnail()
     {
         GameObject[] snailBones = GameObject.FindGameObjectsWithTag("Bone Object");
-        for (int i = 0; i < snailBones.Length; i++)
+        if (AnotherSnailController.facingLeft || moveHorizontal < 0)
         {
-            snailBones[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
+            snailBones[0].transform.localRotation = Quaternion.Euler(0, 180, 0);
+            for (int i = 1; i < snailBones.Length; i++)
+            {
+                snailBones[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < snailBones.Length; i++)
+            {
+                snailBones[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
+            }
         }
     }
 

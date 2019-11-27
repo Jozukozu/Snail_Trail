@@ -8,11 +8,13 @@ public class AnotherSnailController : MonoBehaviour
     public float speed;
     public Vector3 averageNormal;
     public bool touchingGround;
+    private float moveHorizontal;
+    public static bool facingLeft;
 
 
     void FixedUpdate()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
+        moveHorizontal = Input.GetAxis("Horizontal");
         Vector3 movement;
         if (transform.localRotation.z < 90 && transform.localRotation.z > -90)
         {
@@ -47,8 +49,16 @@ public class AnotherSnailController : MonoBehaviour
             Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, averageNormal);
             Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);
 
-
-            transform.localRotation = Quaternion.Euler(0, 0, finalRotation.eulerAngles.z);
+            if(moveHorizontal > 0)
+            {
+                facingLeft = false;
+                transform.localRotation = Quaternion.Euler(0, 0, finalRotation.eulerAngles.z);
+            }
+            else if (moveHorizontal < 0)
+            {
+                facingLeft = true;
+                transform.localRotation = Quaternion.Euler(0, 180, -finalRotation.eulerAngles.z);
+            }
 
 
             transform.position = averagePoint + transform.up * 0.25f;
@@ -73,20 +83,20 @@ public class AnotherSnailController : MonoBehaviour
         Ray rightRay;
         Ray leftRay;
         float rayLength = 1f;
-        if (movementDirection.x > 0)
+        if (movementDirection.x != 0)
         {
             rightRay = new Ray(transform.position + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up);
             leftRay = new Ray(transform.position + (transform.right * speed) - transform.localScale.x / 8 * transform.right, -transform.up);
             Debug.DrawRay(transform.position + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up * rayLength, Color.green);
             Debug.DrawRay(transform.position + (transform.right * speed) - transform.localScale.x / 8 * transform.right, -transform.up * rayLength, Color.red);
         }
-        else if (movementDirection.x < 0)
-        {
-            rightRay = new Ray(transform.position + (-transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up);
-            leftRay = new Ray(transform.position + (-transform.right * speed) - transform.localScale.x / 8 * transform.right, -transform.up);
-            Debug.DrawRay(transform.position + (-transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up * rayLength, Color.green);
-            Debug.DrawRay(transform.position + (-transform.right * speed) - transform.localScale.x / 8 * transform.right, -transform.up * rayLength, Color.red);
-        }
+        //else if (movementDirection.x < 0)
+        //{
+        //    rightRay = new Ray(transform.position + (-transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up);
+        //    leftRay = new Ray(transform.position + (-transform.right * speed) - transform.localScale.x / 8 * transform.right, -transform.up);
+        //    Debug.DrawRay(transform.position + (-transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up * rayLength, Color.green);
+        //    Debug.DrawRay(transform.position + (-transform.right * speed) - transform.localScale.x / 8 * transform.right, -transform.up * rayLength, Color.red);
+        //}
         else
         {
             rightRay = new Ray(transform.position + transform.localScale.x / 8 * transform.right, -transform.up);
