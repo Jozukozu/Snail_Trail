@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnotherSnailController : MonoBehaviour
+public class SnailBodyController : MonoBehaviour
 {
 
     public float speed;

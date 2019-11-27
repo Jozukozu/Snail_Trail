@@ -8,7 +8,7 @@ public class SnailTailController : MonoBehaviour
     public GameObject previousBone;
     protected Vector3 averageNormal;
     private SnailTailController snailTailController;
-    private AnotherSnailController anotherSnailController;
+    private SnailBodyController anotherSnailController;
     private bool isRoot;
     public float rayLength;
     public bool touchingGround;
@@ -25,9 +25,9 @@ public class SnailTailController : MonoBehaviour
             isRoot = false;
         }
 
-        else if (previousBone.GetComponent<AnotherSnailController>())
+        else if (previousBone.GetComponent<SnailBodyController>())
         {
-            anotherSnailController = previousBone.GetComponent<AnotherSnailController>();
+            anotherSnailController = previousBone.GetComponent<SnailBodyController>();
             isRoot = true;
         }
     }

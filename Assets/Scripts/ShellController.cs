@@ -83,7 +83,7 @@ public class ShellController : MonoBehaviour
     private void resetSnail()
     {
         GameObject[] snailBones = GameObject.FindGameObjectsWithTag("Bone Object");
-        if (AnotherSnailController.facingLeft || moveHorizontal < 0)
+        if (SnailBodyController.facingLeft || moveHorizontal < 0)
         {
             snailBones[0].transform.localRotation = Quaternion.Euler(0, 180, 0);
             for (int i = 1; i < snailBones.Length; i++)
