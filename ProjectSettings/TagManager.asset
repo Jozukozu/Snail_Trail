@@ -8,6 +8,7 @@ TagManager:
   - Audio Controller
   - Button Sound
   - Environment
+  - Bone Object
   layers:
   - Default
   - TransparentFX
