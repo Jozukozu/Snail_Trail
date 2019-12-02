@@ -9,7 +9,7 @@ public class SnailBodyController : MonoBehaviour
     public Vector3 averageNormal;
     public bool touchingGround;
     private float moveHorizontal;
-    public static bool facingLeft;
+    public static bool facingRight = true;
     private Vector3 groundPoint;
 
 
@@ -62,12 +62,12 @@ public class SnailBodyController : MonoBehaviour
 
             if(moveHorizontal > 0)
             {
-                facingLeft = false;
+                facingRight = true;
                 transform.localRotation = Quaternion.Euler(0, 0, finalRotation.eulerAngles.z);
             }
             else if (moveHorizontal < 0)
             {
-                facingLeft = true;
+                facingRight = false;
                 transform.localRotation = Quaternion.Euler(0, 180, -finalRotation.eulerAngles.z);
             }
 
