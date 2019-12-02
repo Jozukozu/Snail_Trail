@@ -9,7 +9,8 @@ public class SnailBodyController : MonoBehaviour
     public Vector3 averageNormal;
     public bool touchingGround;
     private float moveHorizontal;
-    public static bool facingLeft;
+    public static bool facingRight = true;
+    private Vector3 groundPoint;
 
 
     void FixedUpdate()
@@ -33,6 +34,8 @@ public class SnailBodyController : MonoBehaviour
     {
         RaycastHit rightHitInfo;
         RaycastHit leftHitInfo;
+        RaycastHit forwardHitInfo;
+        Vector3 averagePoint;
 
 
         if (GetRaycastDownAtNewPosition(movementDirection, out rightHitInfo, out leftHitInfo))
@@ -43,20 +46,28 @@ public class SnailBodyController : MonoBehaviour
                 allRBs[r].useGravity = false;
                 allRBs[r].isKinematic = true;
             }
+            //if(GetRaycastForwardAtNewPosition(movementDirection, out forwardHitInfo))
+            //{
+            //    averageNormal = (leftHitInfo.normal + forwardHitInfo.normal) / 2;
+            //    averagePoint = (leftHitInfo.point + forwardHitInfo.point) / 2;
+            //}
+            //else
+            //{
             averageNormal = (leftHitInfo.normal + rightHitInfo.normal) / 2;
+                averagePoint = (leftHitInfo.point + rightHitInfo.point) / 2;
+            //}
             //Debug.Log("real root: " + averageNormal);
-            Vector3 averagePoint = (leftHitInfo.point + rightHitInfo.point) / 2;
             Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, averageNormal);
             Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);
 
             if(moveHorizontal > 0)
             {
-                facingLeft = false;
+                facingRight = true;
                 transform.localRotation = Quaternion.Euler(0, 0, finalRotation.eulerAngles.z);
             }
             else if (moveHorizontal < 0)
             {
-                facingLeft = true;
+                facingRight = false;
                 transform.localRotation = Quaternion.Euler(0, 180, -finalRotation.eulerAngles.z);
             }
 
@@ -116,6 +127,55 @@ public class SnailBodyController : MonoBehaviour
 
         touchingGround = false;
         return false;
+    }
+
+    private bool GetRaycastForwardAtNewPosition(Vector3 movementDirection, out RaycastHit forwardInfo)
+    {
+        Ray forwardRay;
+        float rayLength = 0.5f;
+        if (movementDirection.x != 0)
+        {
+            forwardRay = new Ray(transform.position + (transform.right * speed), transform.right);
+            Debug.DrawRay(transform.position + (transform.right * speed), transform.right * rayLength, Color.green);
+        }
+        else
+        {
+            forwardRay = new Ray(transform.position, transform.right);
+            Debug.DrawRay(transform.position, transform.right * rayLength, Color.green);
+        }
+        bool forwardCast = Physics.Raycast(forwardRay, out forwardInfo, rayLength, LayerMask.GetMask("Ground"));
+
+        if(forwardCast)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.tag == "Environment")
+        {
+            groundPoint = transform.position;
+            Debug.Log("touching ground");
+        }
+    }
+
+    private void OnTriggerStay(Collider collision)
+    {
+        if (collision.tag == "Environment")
+        {
+            Vector3 difference = transform.position - groundPoint;
+            transform.position = groundPoint - difference;
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            GameObject[] snailBones = GameObject.FindGameObjectsWithTag("Bone Object");
+            for (int i = 0; i < snailBones.Length; i++)
+            {
+                snailBones[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
+            }
+            Debug.Log("inside ground");
+        }
     }
 
 }

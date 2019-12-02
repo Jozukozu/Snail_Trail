@@ -14,7 +14,6 @@ public class ShellController : MonoBehaviour
     private bool onGround;
     public GameObject bone;
     private float moveHorizontal;
-    private bool facingRight;
 
     // Start is called before the first frame update
     void Start()
@@ -32,19 +31,27 @@ public class ShellController : MonoBehaviour
             rigidBody.useGravity = true;
             rigidBody.isKinematic = false;
             snailBody.SetActive(false);
-            if(facingRight)
+            if(SnailBodyController.facingRight)
             {
-                snail.transform.position = shell.transform.position + new Vector3(0.8f, -0.4f, 0.0f);
+                snail.transform.position = shell.transform.position + new Vector3(0.5f, -0.3f, 0.0f);
             }
-            else
+            else if (!SnailBodyController.facingRight)
             {
-                snail.transform.position = shell.transform.position + new Vector3(-0.8f, -0.4f, 0.0f);
+                snail.transform.position = shell.transform.position + new Vector3(-0.5f, -0.3f, 0.0f);
             }
             if (onGround)
             {
                 moveHorizontal = Input.GetAxis("Horizontal");
                 Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0.0f);
-                rigidBody.AddForce(movement * speed);
+                RaycastHit hitInfo;
+                if (!GetRaycastForwardAtNewPosition(movement, out hitInfo))
+                {
+                    rigidBody.AddForce(movement * speed);
+                }
+                else
+                {
+                    rigidBody.AddForce(movement * speed * 0.1f);
+                }
             }
         }
         else
@@ -72,18 +79,20 @@ public class ShellController : MonoBehaviour
         }
         if (moveHorizontal > 0)
         {
-            facingRight = true;
+            SnailBodyController.facingRight = true;
         }
         else if(moveHorizontal < 0)
         {
-            facingRight = false;
+            SnailBodyController.facingRight = false;
         }
     }
 
     private void resetSnail()
     {
         GameObject[] snailBones = GameObject.FindGameObjectsWithTag("Bone Object");
-        if (SnailBodyController.facingLeft || moveHorizontal < 0)
+        Vector3 spawnPoint = snailBones[0].transform.position + snailBones[0].transform.TransformVector(0.0f, snailBones[0].transform.localPosition.y + 1f, 0.0f);
+        snailBones[0].transform.position = spawnPoint;
+        if (!SnailBodyController.facingRight)
         {
             snailBones[0].transform.localRotation = Quaternion.Euler(0, 180, 0);
             for (int i = 1; i < snailBones.Length; i++)
@@ -98,6 +107,40 @@ public class ShellController : MonoBehaviour
                 snailBones[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
         }
+    }
+
+    private bool GetRaycastForwardAtNewPosition(Vector3 movementDirection, out RaycastHit rightHitInfo)
+    {
+        Vector3 newPosition = transform.position;
+
+        Ray rightRay;
+        float rayLength = 1f;
+
+        if (movementDirection.x > 0)
+        {
+            rightRay = new Ray(newPosition - Vector3.up * 0.5f, Vector3.right);
+            Debug.DrawRay(newPosition - Vector3.up * 0.5f, Vector3.right * rayLength, Color.green);
+
+        }
+        else if (movementDirection.x < 0)
+        {
+            rightRay = new Ray(newPosition - Vector3.up * 0.5f, -Vector3.right);
+            Debug.DrawRay(newPosition - Vector3.up * 0.5f, -Vector3.right * rayLength, Color.green);
+        }
+        else
+        {
+            rightRay = new Ray(newPosition - Vector3.up * 0.5f, Vector3.right);
+            Debug.DrawRay(newPosition - Vector3.up * 0.5f, -Vector3.right * rayLength, Color.green);
+        }
+        bool rightCast = Physics.Raycast(rightRay, out rightHitInfo, rayLength, LayerMask.GetMask("Ground"));
+
+
+        if (rightCast)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void OnCollisionEnter(Collision collision)

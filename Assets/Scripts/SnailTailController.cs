@@ -74,7 +74,7 @@ public class SnailTailController : MonoBehaviour
 
             if (previousNormal != averageNormal)
             {
-                Debug.Log(this + "not same normals, root: " + previousNormal + "own: " + averageNormal);
+                //Debug.Log(this + "not same normals, root: " + previousNormal + "own: " + averageNormal);
                 Vector3 averagePoint = rightHitInfo.point;
                 Quaternion targetRotation = Quaternion.FromToRotation(/*Vector3.up*/averageNormal, previousNormal);
                 //Debug.Log("targetrotation: " + targetRotation);
@@ -99,28 +99,33 @@ public class SnailTailController : MonoBehaviour
         }
         else
         {
+            if(!colliderTouchingGround)
+            {
+                transform.Rotate(new Vector3(0.0f, 0.0f, 1.0f), Space.Self);
+            }
             //Rigidbody rigidBody = GetComponent<Rigidbody>();
             //rigidBody.useGravity = true;
             //rigidBody.isKinematic = false;
-            //transform.localRotation = Quaternion.Euler(0, 0, 0);
-            SnailTailController[] allRBs = GetComponentsInChildren<SnailTailController>();
-            childTouchesGround = false;
-            for (int r = 0; r < allRBs.Length; r++)
-            {
-                if(allRBs[r].touchingGround)
-                {
-                    childTouchesGround = true;
-                }
-            }
-            if(!childTouchesGround && !TailEndController.touchingGround)
-            {
-                if(transform.localEulerAngles.z < 50.0f)
-                {
-                    transform.Rotate(new Vector3(0.0f, 0.0f, 1.0f), Space.Self);
-                }
-                
-            }
-            
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            //transform.Translate(0, -0.005f, 0, Space.Self);
+            //SnailTailController[] allRBs = GetComponentsInChildren<SnailTailController>();
+            //childTouchesGround = false;
+            //for (int r = 0; r < allRBs.Length; r++)
+            //{
+            //    if(allRBs[r].touchingGround)
+            //    {
+            //        childTouchesGround = true;
+            //    }
+            //}
+            //if(!childTouchesGround && !TailEndController.touchingGround)
+            //{
+            //    if(transform.localEulerAngles.z < 50.0f)
+            //    {
+            //        transform.Rotate(new Vector3(0.0f, 0.0f, 1.0f), Space.Self);
+            //    }
+
+            //}
+
         }
 
     }
@@ -166,21 +171,33 @@ public class SnailTailController : MonoBehaviour
         return false;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
-        if (collision.collider.gameObject.layer == LayerMask.GetMask("LAYER_NAME"))
+        if (collision.tag == "Environment")
         {
             colliderTouchingGround = true;
-            Debug.Log("touching ground");
+            //Debug.Log("touching ground");
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerStay(Collider collision)
     {
-        if (collision.collider.gameObject.layer == LayerMask.GetMask("LAYER_NAME"))
+        if (collision.tag == "Environment")
         {
+            transform.Rotate(new Vector3(0, 0, -1.0f), Space.Self);
+            //transform.localRotation = Quaternion.Euler(0, 0, 0);
+            colliderTouchingGround = true;
+            //Debug.Log("inside ground");
+        }
+    }
+
+    private void OnTriggerExit(Collider collision)
+    {
+        if (collision.tag == "Environment")
+        {
+            transform.Rotate(new Vector3(0, 0, 1.0f), Space.Self);
             colliderTouchingGround = false;
-            Debug.Log("not touching ground");
+            //Debug.Log("not touching ground");
         }
     }
 
