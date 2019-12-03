@@ -5,7 +5,6 @@ using UnityEngine;
 public class TutorialTextController : MonoBehaviour
 {
     private bool snailInTrigger;
-    public GameObject text;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +19,7 @@ public class TutorialTextController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Bone Object" || other.tag == "Shell")
+        if(other.CompareTag("Bone Object") || other.CompareTag("Shell"))
         {
             snailInTrigger = true;
         }
@@ -28,30 +27,18 @@ public class TutorialTextController : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Bone Object" || other.tag == "Shell")
+        if (other.CompareTag("Bone Object") || other.CompareTag("Shell"))
         {
             snailInTrigger = true;
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Bone Object" || other.tag == "Shell")
-        {
-            snailInTrigger = false;
-        }
-    }
-
     void OnGUI()
     {
-        Debug.Log(snailInTrigger);
+        //If the boolean is active, display the text
         if (snailInTrigger == true)
         {
-            text.SetActive(true);
-        }
-        else
-        {
-            text.SetActive(false);
+            GUI.Label(new Rect(transform.position.x, transform.position.y, 0, 0), "Hello!");
         }
     }
 }

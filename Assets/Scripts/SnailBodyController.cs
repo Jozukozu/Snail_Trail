@@ -46,16 +46,16 @@ public class SnailBodyController : MonoBehaviour
                 allRBs[r].useGravity = false;
                 allRBs[r].isKinematic = true;
             }
-            if(GetRaycastForwardAtNewPosition(movementDirection, out forwardHitInfo))
-            {
-                averageNormal = (leftHitInfo.normal + forwardHitInfo.normal) / 2;
-                averagePoint = (leftHitInfo.point + forwardHitInfo.point) / 2;
-            }
-            else
-            {
-                averageNormal = (leftHitInfo.normal + rightHitInfo.normal) / 2;
+            //if(GetRaycastForwardAtNewPosition(movementDirection, out forwardHitInfo))
+            //{
+            //    averageNormal = (leftHitInfo.normal + forwardHitInfo.normal) / 2;
+            //    averagePoint = (leftHitInfo.point + forwardHitInfo.point) / 2;
+            //}
+            //else
+            //{
+            averageNormal = (leftHitInfo.normal + rightHitInfo.normal) / 2;
                 averagePoint = (leftHitInfo.point + rightHitInfo.point) / 2;
-            }
+            //}
             //Debug.Log("real root: " + averageNormal);
             Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, averageNormal);
             Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);
@@ -168,14 +168,7 @@ public class SnailBodyController : MonoBehaviour
         {
             Vector3 difference = transform.position - groundPoint;
             transform.position = groundPoint - difference;
-            if(facingRight)
-            {
-                transform.localRotation = Quaternion.Euler(0, 0, 0);
-            }
-            else
-            {
-                transform.localRotation = Quaternion.Euler(0, 180, 0);
-            }
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
             GameObject[] snailBones = GameObject.FindGameObjectsWithTag("Bone Object");
             for (int i = 0; i < snailBones.Length; i++)
             {
