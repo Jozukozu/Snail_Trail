@@ -11,6 +11,8 @@ TagManager:
   - Bone Object
   - Shell
   - Head
+  - Pick Up
+
   layers:
   - Default
   - TransparentFX

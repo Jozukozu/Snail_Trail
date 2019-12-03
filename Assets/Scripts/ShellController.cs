@@ -169,4 +169,16 @@ public class ShellController : MonoBehaviour
             Debug.Log("not on ground");
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Pick Up")
+        {
+            LevelController.baseScore += 10;
+            LevelController.energyScore += 20;
+            LevelController.energy = 20;
+
+            Destroy(other.gameObject);
+        }
+    }
 }
