@@ -46,16 +46,16 @@ public class SnailBodyController : MonoBehaviour
                 allRBs[r].useGravity = false;
                 allRBs[r].isKinematic = true;
             }
-            //if(GetRaycastForwardAtNewPosition(movementDirection, out forwardHitInfo))
-            //{
-            //    averageNormal = (leftHitInfo.normal + forwardHitInfo.normal) / 2;
-            //    averagePoint = (leftHitInfo.point + forwardHitInfo.point) / 2;
-            //}
-            //else
-            //{
-            averageNormal = (leftHitInfo.normal + rightHitInfo.normal) / 2;
+            if(GetRaycastForwardAtNewPosition(movementDirection, out forwardHitInfo))
+            {
+                averageNormal = (leftHitInfo.normal + forwardHitInfo.normal) / 2;
+                averagePoint = (leftHitInfo.point + forwardHitInfo.point) / 2;
+            }
+            else
+            {
+                averageNormal = (leftHitInfo.normal + rightHitInfo.normal) / 2;
                 averagePoint = (leftHitInfo.point + rightHitInfo.point) / 2;
-            //}
+            }
             //Debug.Log("real root: " + averageNormal);
             Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, averageNormal);
             Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);
