@@ -9,6 +9,9 @@ TagManager:
   - Button Sound
   - Environment
   - Bone Object
+  - Shell
+  - Head
+  - Pick Up
   layers:
   - Default
   - TransparentFX
