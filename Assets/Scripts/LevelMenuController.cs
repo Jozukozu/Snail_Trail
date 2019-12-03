@@ -17,6 +17,7 @@ public class LevelMenuController : MonoBehaviour
     void Start()
     {
         float musicVolume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
+        GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().StopMusic("Level Background Music");
         GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().SetVolume("Background Music", musicVolume);
         GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().PlayMusic("Background Music");
 
@@ -29,7 +30,8 @@ public class LevelMenuController : MonoBehaviour
     {
         ButtonSound();
         Debug.Log("Game started, level " + levelIndex);
-        //SceneManager.LoadScene(level);
+        string levelName = "Level" + levelIndex + "Scene";
+        SceneManager.LoadScene(levelName);
     }
 
     public void BackButton()

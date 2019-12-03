@@ -177,6 +177,7 @@ public class ShellController : MonoBehaviour
             LevelController.baseScore += 10;
             LevelController.energyScore += 20;
             LevelController.energy = 20;
+            LevelController.eat = true;
 
             Destroy(other.gameObject);
         }

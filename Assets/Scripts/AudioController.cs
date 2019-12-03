@@ -9,7 +9,7 @@ public class AudioController : MonoBehaviour
     private AudioSource _audioSource;
     private AudioSource backgroundMusic;
     private AudioSource buttonSound;
-
+    private AudioSource levelBackgroundMusic;
 
     private void Awake()
     {
@@ -20,7 +20,7 @@ public class AudioController : MonoBehaviour
         audios = GetComponents(typeof(AudioSource));
         buttonSound = (AudioSource)audios[0];
         backgroundMusic = (AudioSource)audios[1];
-
+        levelBackgroundMusic = (AudioSource)audios[2];
         float musicVolume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
         SetVolume("Background Music", musicVolume);
         SceneManager.LoadScene("StartScene");
@@ -43,6 +43,11 @@ public class AudioController : MonoBehaviour
             buttonSound.Play();
         }
         
+        else if(tag == "Level Background Music")
+        {
+            levelBackgroundMusic.Play();
+        }
+        
     }
 
 
@@ -57,6 +62,10 @@ public class AudioController : MonoBehaviour
         {
             buttonSound.Stop();
         }
+        else if (tag == "Level Background Music")
+        {
+            levelBackgroundMusic.Stop();
+        }
     }
 
     public void SetVolume(string tag, float volume)
@@ -69,6 +78,10 @@ public class AudioController : MonoBehaviour
         else if (tag == "Button Sound")
         {
             buttonSound.volume = volume;
+        }
+        else if (tag == "Level Background Music")
+        {
+            levelBackgroundMusic.volume = volume;
         }
 
     }
