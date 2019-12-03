@@ -168,7 +168,14 @@ public class SnailBodyController : MonoBehaviour
         {
             Vector3 difference = transform.position - groundPoint;
             transform.position = groundPoint - difference;
-            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            if(facingRight)
+            {
+                transform.localRotation = Quaternion.Euler(0, 0, 0);
+            }
+            else
+            {
+                transform.localRotation = Quaternion.Euler(0, 180, 0);
+            }
             GameObject[] snailBones = GameObject.FindGameObjectsWithTag("Bone Object");
             for (int i = 0; i < snailBones.Length; i++)
             {
