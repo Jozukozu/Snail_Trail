@@ -46,21 +46,21 @@ public class SnailBodyController : MonoBehaviour
                 allRBs[r].useGravity = false;
                 allRBs[r].isKinematic = true;
             }
-            //if(GetRaycastForwardAtNewPosition(movementDirection, out forwardHitInfo))
-            //{
-            //    averageNormal = (leftHitInfo.normal + forwardHitInfo.normal) / 2;
-            //    averagePoint = (leftHitInfo.point + forwardHitInfo.point) / 2;
-            //}
-            //else
-            //{
-            averageNormal = (leftHitInfo.normal + rightHitInfo.normal) / 2;
+            if (GetRaycastForwardAtNewPosition(movementDirection, out forwardHitInfo))
+            {
+                averageNormal = (leftHitInfo.normal + forwardHitInfo.normal) / 2;
+                averagePoint = (leftHitInfo.point + forwardHitInfo.point) / 2;
+            }
+            else
+            {
+                averageNormal = (leftHitInfo.normal + rightHitInfo.normal) / 2;
                 averagePoint = (leftHitInfo.point + rightHitInfo.point) / 2;
-            //}
+            }
             //Debug.Log("real root: " + averageNormal);
             Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, averageNormal);
             Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);
 
-            if(moveHorizontal > 0)
+            if (moveHorizontal > 0)
             {
                 facingRight = true;
                 transform.localRotation = Quaternion.Euler(0, 0, finalRotation.eulerAngles.z);
@@ -145,7 +145,7 @@ public class SnailBodyController : MonoBehaviour
         }
         bool forwardCast = Physics.Raycast(forwardRay, out forwardInfo, rayLength, LayerMask.GetMask("Ground"));
 
-        if(forwardCast)
+        if (forwardCast)
         {
             return true;
         }
@@ -168,7 +168,14 @@ public class SnailBodyController : MonoBehaviour
         {
             Vector3 difference = transform.position - groundPoint;
             transform.position = groundPoint - difference;
-            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            if (facingRight)
+            {
+                transform.localRotation = Quaternion.Euler(0, 0, 0);
+            }
+            else
+            {
+                transform.localRotation = Quaternion.Euler(0, 180, 0);
+            }
             GameObject[] snailBones = GameObject.FindGameObjectsWithTag("Bone Object");
             for (int i = 0; i < snailBones.Length; i++)
             {
