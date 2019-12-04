@@ -256,7 +256,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2289080261786908540}
-  m_LocalRotation: {x: 0.09821979, y: 0.99516475, z: -0, w: 0}
+  m_LocalRotation: {x: 0.09821691, y: 0.99516505, z: -0.00000001839146, w: -0.00000018634815}
   m_LocalPosition: {x: 16.37, y: 1.09, z: 0.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -856,7 +856,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7846853061349143403}
   m_LocalRotation: {x: -0.19540529, y: -0.9807139, z: -0.0040395986, w: 0.00080488174}
-  m_LocalPosition: {x: 0.18, y: 0.61, z: -0.39}
+  m_LocalPosition: {x: 0.18, y: 0.61, z: -0.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2999163732816053615}
@@ -4656,16 +4656,16 @@ ParticleSystem:
       emitProbability: 1
   LightsModule:
     enabled: 1
-    ratio: 0.5
+    ratio: 1
     light: {fileID: 7846853059503144189}
-    randomDistribution: 1
+    randomDistribution: 0
     color: 1
     range: 1
     intensity: 1
     rangeCurve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4768,7 +4768,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    maxLights: 20
+    maxLights: 150
   TrailModule:
     enabled: 0
     mode: 0
