@@ -18,6 +18,10 @@ public class LevelController : MonoBehaviour
 
     void Start()
     {
+        baseScore = 0;
+        energyScore = 0;
+        energy = 20;
+        InvokeRepeating("decreaseEnergy", 5.0f, 1.0f);
         float musicVolume = PlayerPrefs.GetFloat("musicVolume", 1.0f); 
         GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().StopMusic("Background Music");
         GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().SetVolume("Level Background Music", musicVolume);
@@ -25,10 +29,6 @@ public class LevelController : MonoBehaviour
 
         float soundVolume = PlayerPrefs.GetFloat("soundVolume", 1.0f);
         GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().SetVolume("Button Sound", soundVolume);
-        baseScore = 0;
-        energyScore = 0;
-        energy = 20;
-        InvokeRepeating("decreaseEnergy", 5.0f , 1.0f);
     }
 
     void Update()
