@@ -44,7 +44,6 @@ public class TutorialTextController : MonoBehaviour
 
     void OnGUI()
     {
-        Debug.Log(snailInTrigger);
         if (snailInTrigger == true)
         {
             text.SetActive(true);
