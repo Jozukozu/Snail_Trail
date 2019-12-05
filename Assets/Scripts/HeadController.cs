@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class HeadController : MonoBehaviour
 {
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Pick Up")
@@ -13,9 +12,9 @@ public class HeadController : MonoBehaviour
             LevelController.energyScore += 20;
             LevelController.energy = 20;
             LevelController.eat = true;
-            
+
             Destroy(other.transform.parent.gameObject);
         }
     }
-
 }
+

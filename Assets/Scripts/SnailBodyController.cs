@@ -46,7 +46,12 @@ public class SnailBodyController : MonoBehaviour
                 allRBs[r].useGravity = false;
                 allRBs[r].isKinematic = true;
             }
-            if (GetRaycastForwardAtNewPosition(movementDirection, out forwardHitInfo))
+            if (GetHeadRayHigh(movementDirection, out forwardHitInfo))
+            {
+                averageNormal = (leftHitInfo.normal + forwardHitInfo.normal) / 2;
+                averagePoint = (leftHitInfo.point + forwardHitInfo.point) / 2;
+            }
+            else if (GetHeadRayLow(movementDirection, out forwardHitInfo))
             {
                 averageNormal = (leftHitInfo.normal + forwardHitInfo.normal) / 2;
                 averagePoint = (leftHitInfo.point + forwardHitInfo.point) / 2;
@@ -129,10 +134,10 @@ public class SnailBodyController : MonoBehaviour
         return false;
     }
 
-    private bool GetRaycastForwardAtNewPosition(Vector3 movementDirection, out RaycastHit forwardInfo)
+    private bool GetHeadRayLow(Vector3 movementDirection, out RaycastHit forwardInfo)
     {
         Ray forwardRay;
-        float rayLength = 0.5f;
+        float rayLength = 0.82f;
         if (movementDirection.x != 0)
         {
             forwardRay = new Ray(transform.position + (transform.right * speed), transform.right);
@@ -142,6 +147,30 @@ public class SnailBodyController : MonoBehaviour
         {
             forwardRay = new Ray(transform.position, transform.right);
             Debug.DrawRay(transform.position, transform.right * rayLength, Color.green);
+        }
+        bool forwardCast = Physics.Raycast(forwardRay, out forwardInfo, rayLength, LayerMask.GetMask("Ground"));
+
+        if (forwardCast)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool GetHeadRayHigh(Vector3 movementDirection, out RaycastHit forwardInfo)
+    {
+        Ray forwardRay;
+        float rayLength = 0.82f;
+        if (movementDirection.x != 0)
+        {
+            forwardRay = new Ray(transform.position + (transform.right * speed), transform.right + (transform.up * 0.5f));
+            Debug.DrawRay(transform.position + (transform.right * speed), (transform.right + (transform.up * 0.5f)).normalized * rayLength, Color.green);
+        }
+        else
+        {
+            forwardRay = new Ray(transform.position, transform.right + (transform.up * 0.5f));
+            Debug.DrawRay(transform.position, (transform.right + (transform.up * 0.5f)).normalized * rayLength, Color.green);
         }
         bool forwardCast = Physics.Raycast(forwardRay, out forwardInfo, rayLength, LayerMask.GetMask("Ground"));
 
@@ -168,20 +197,21 @@ public class SnailBodyController : MonoBehaviour
         {
             Vector3 difference = transform.position - groundPoint;
             transform.position = groundPoint - difference;
-            if (facingRight)
-            {
-                transform.localRotation = Quaternion.Euler(0, 0, 0);
-            }
-            else
-            {
-                transform.localRotation = Quaternion.Euler(0, 180, 0);
-            }
+            //if (facingRight)
+            //{
+            //    transform.localRotation = Quaternion.Euler(0, 0, 0);
+            //}
+            //else
+            //{
+            //    transform.localRotation = Quaternion.Euler(0, 180, 0);
+            //}
             GameObject[] snailBones = GameObject.FindGameObjectsWithTag("Bone Object");
-            for (int i = 0; i < snailBones.Length; i++)
+            for (int i = 0; i < snailBones.Length - 1; i++)
             {
                 snailBones[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
             Debug.Log("inside ground");
+            Debug.Log(collision);
         }
     }
 
