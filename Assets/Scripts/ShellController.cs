@@ -179,7 +179,7 @@ public class ShellController : MonoBehaviour
             LevelController.energy = 20;
             LevelController.eat = true;
 
-            Destroy(other.gameObject);
+            Destroy(other.transform.parent.gameObject);
         }
     }
 }
