@@ -12,7 +12,7 @@ public class LevelMenuController : MonoBehaviour
     public Text highscoreLabel;
     public Text highscore;
 
-    private int levelIndex;
+    public static int levelIndex;
 
     void Start()
     {
@@ -45,8 +45,11 @@ public class LevelMenuController : MonoBehaviour
         ButtonSound();
         levelName.text = name.text;
 
+        string levelScore = "level" + levelIndex + "Score";
+        int highScore = PlayerPrefs.GetInt(levelScore, 0);
         highscoreLabel.gameObject.SetActive(true);
         highscore.gameObject.SetActive(true);
+        highscore.text = highScore.ToString();
         startButton.interactable = true;
     }
 

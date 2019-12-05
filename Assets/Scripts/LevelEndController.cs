@@ -29,6 +29,8 @@ public class LevelEndController : MonoBehaviour
 
     public void ContinueButton()
     {
+        string levelScore = "level" + LevelMenuController.levelIndex + "Score";
+        PlayerPrefs.SetInt(levelScore, LevelController.finalScore);
         GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().PlayMusic("Button Sound");
         SceneManager.LoadScene("LevelMenuScene");
     }
