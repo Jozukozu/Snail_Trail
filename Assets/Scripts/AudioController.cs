@@ -23,7 +23,7 @@ public class AudioController : MonoBehaviour
         levelBackgroundMusic = (AudioSource)audios[2];
         float musicVolume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
         SetVolume("Background Music", musicVolume);
-        SceneManager.LoadScene("StartScene");
+        SceneManager.LoadScene("CutScene");
     }
 
     public void PlayMusic(string tag)
