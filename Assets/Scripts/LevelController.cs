@@ -15,6 +15,8 @@ public class LevelController : MonoBehaviour
     public static int finalScore;
     public GameObject escMenu;
     public static bool eat;
+    public GameObject snail;
+    public GameObject shell;
 
     void Start()
     {
@@ -37,6 +39,9 @@ public class LevelController : MonoBehaviour
         {
             escMenu.SetActive(true);
             CancelInvoke();
+            snail.SetActive(false);
+            shell.SetActive(false);
+
         }
         if (eat)
         {
@@ -82,6 +87,8 @@ public class LevelController : MonoBehaviour
         ButtonSound();
         escMenu.SetActive(false);
         InvokeRepeating("decreaseEnergy", 1.0f, 1.0f);
+        snail.SetActive(true);
+        shell.SetActive(true);
     }
 
     public void ButtonSound()

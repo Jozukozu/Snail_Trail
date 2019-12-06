@@ -4836,6 +4836,8 @@ MonoBehaviour:
   scoreText: {fileID: 92451764}
   energyText: {fileID: 1306359182}
   escMenu: {fileID: 1282114384}
+  snail: {fileID: 1734308190}
+  shell: {fileID: 785726438}
 --- !u!4 &2102595733
 Transform:
   m_ObjectHideFlags: 0

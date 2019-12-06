@@ -12,6 +12,14 @@ public class VideoController : MonoBehaviour
     {
         VideoPlayer.loopPointReached += LoadScene;
     }
+
+    void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            LoadScene(VideoPlayer);
+        }
+    }
     void LoadScene(VideoPlayer vp)
     {
         SceneManager.LoadScene("StartScene");
