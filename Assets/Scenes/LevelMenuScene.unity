@@ -469,6 +469,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &514520934 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3900583914952239907, guid: d67c3d636b7493844add73a1ec144d8c,
+    type: 3}
+  m_PrefabInstance: {fileID: 514520931}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &687900149
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,6 +1461,7 @@ MonoBehaviour:
   startButton: {fileID: 895742510}
   highscoreLabel: {fileID: 687900151}
   highscore: {fileID: 1107909010}
+  level1Button: {fileID: 514520934}
 --- !u!4 &1798146248
 Transform:
   m_ObjectHideFlags: 0
