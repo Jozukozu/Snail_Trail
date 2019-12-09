@@ -15,7 +15,7 @@ public class ShellController : MonoBehaviour
     public GameObject bone;
     private float moveHorizontal;
     private Vector3[] bonePosition = new Vector3[8];
-    private GameObject[] snailBones = new GameObject[9];
+    private GameObject[] snailBones = new GameObject[8];
 
     // Start is called before the first frame update
     void Start()
@@ -23,15 +23,24 @@ public class ShellController : MonoBehaviour
         snailBones = GameObject.FindGameObjectsWithTag("Bone Object"); 
         for (int i = 1; i < snailBones.Length; i++)
         {
-            bonePosition[i - 1] = snailBones[i].transform.localPosition;
+            bonePosition[i] = snailBones[i].transform.localPosition;
         }
         shellMode = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("shellModeKey", "Space"));
         Debug.Log(shellMode);
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    void FixedUpdate()
     {
+        if (moveHorizontal > 0)
+        {
+            SnailBodyController.facingRight = true;
+        }
+        else if (moveHorizontal < 0)
+        {
+            SnailBodyController.facingRight = false;
+        }
+
         if (shellVisible)
         {
             shell.GetComponent<SphereCollider>().enabled = true;
@@ -80,40 +89,33 @@ public class ShellController : MonoBehaviour
             if (!shellVisible)
             {
                 snailBody.SetActive(true);
-                resetSnail();
+                ResetSnail();
             }
             Debug.Log("space pressed");
         }
-        if (moveHorizontal > 0)
-        {
-            SnailBodyController.facingRight = true;
-        }
-        else if (moveHorizontal < 0)
-        {
-            SnailBodyController.facingRight = false;
-        }
     }
 
-    private void resetSnail()
+    private void ResetSnail()
     {
         for (int i = 0; i < snailBones.Length; i++)
         {
-            Debug.Log(snailBones[i]);
+            Debug.LogError(snailBones[i]);
         }
-        Vector3 spawnPoint = snailBones[0].transform.position + new Vector3(0.0f, 0.2f, 0.0f);
-        snailBones[0].transform.position = spawnPoint;
+        GameObject root = GameObject.FindGameObjectWithTag("Root");
+        Vector3 spawnPoint = root.transform.position + new Vector3(0.0f, 0.2f, 0.0f);
+        root.transform.position = spawnPoint;
         if (!SnailBodyController.facingRight)
         {
-            snailBones[0].transform.localRotation = Quaternion.Euler(0, 180, 0);
+            root.transform.localRotation = Quaternion.Euler(0, 180, 0);
         }
         else
         {
-            snailBones[0].transform.localRotation = Quaternion.Euler(0, 0, 0);
+            root.transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
         for (int i = 1; i < snailBones.Length; i++)
         {
             snailBones[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
-            snailBones[i].transform.localPosition = bonePosition[i - 1];
+            snailBones[i].transform.localPosition = bonePosition[i];
         }
     }
 
@@ -156,7 +158,7 @@ public class ShellController : MonoBehaviour
         if (collision.gameObject.layer == 11)
         {
             onGround = true;
-            Debug.Log("on ground");
+            //Debug.Log("on ground");
         }
     }
 
@@ -165,7 +167,7 @@ public class ShellController : MonoBehaviour
         if (collision.gameObject.layer == 11)
         {
             onGround = true;
-            Debug.Log("on ground");
+            //Debug.Log("on ground");
         }
     }
 
@@ -174,7 +176,7 @@ public class ShellController : MonoBehaviour
         if (collision.gameObject.layer == 11)
         {
             onGround = false;
-            Debug.Log("not on ground");
+            //Debug.Log("not on ground");
         }
     }
 

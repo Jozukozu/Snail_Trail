@@ -5130,6 +5130,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: snailBody
       objectReference: {fileID: 0}
+    - target: {fileID: 4746123714015709950, guid: 6e9062ca7dfa8b944a5d6f5e451a70d1,
+        type: 3}
+      propertyPath: m_TagString
+      value: Root
+      objectReference: {fileID: 0}
     - target: {fileID: 335283502247151395, guid: 6e9062ca7dfa8b944a5d6f5e451a70d1,
         type: 3}
       propertyPath: m_LocalPosition.x

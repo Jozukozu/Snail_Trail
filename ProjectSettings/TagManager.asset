@@ -12,7 +12,7 @@ TagManager:
   - Shell
   - Head
   - Pick Up
-
+  - Root
   layers:
   - Default
   - TransparentFX

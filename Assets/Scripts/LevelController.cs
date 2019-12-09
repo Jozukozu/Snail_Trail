@@ -38,7 +38,7 @@ public class LevelController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             escMenu.SetActive(true);
-            CancelInvoke();
+            CancelInvoke("decreaseEnergy");
             snail.SetActive(false);
             shell.SetActive(false);
 
@@ -56,7 +56,7 @@ public class LevelController : MonoBehaviour
     {
         if(LevelEndController.gameOver)
         {
-            CancelInvoke();
+            CancelInvoke("decreaseEnergy");
         }
         finalScore = baseScore + energyScore;
         energyText.text = "Energy:" + energy.ToString();
@@ -65,6 +65,7 @@ public class LevelController : MonoBehaviour
 
     void decreaseEnergy()
     {
+        Debug.Log("decreaseEnergy");
         if (energy > 0) 
         {
             energy--;

@@ -13,6 +13,7 @@ public class AudioController : MonoBehaviour
 
     private void Awake()
     {
+        Debug.LogError("konsoli auki");
         DontDestroyOnLoad(transform.gameObject);
 
 

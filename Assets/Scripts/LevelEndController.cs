@@ -10,7 +10,12 @@ public class LevelEndController : MonoBehaviour
     public GameObject snail;
     public GameObject shell;
     public Text scoreText;
-    public static bool gameOver = false;
+    public static bool gameOver;
+
+    void Start()
+    {
+        gameOver = false;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -30,7 +35,10 @@ public class LevelEndController : MonoBehaviour
     public void ContinueButton()
     {
         string levelScore = "level" + LevelMenuController.levelIndex + "Score";
-        PlayerPrefs.SetInt(levelScore, LevelController.finalScore);
+        if(PlayerPrefs.GetInt(levelScore, 0) < LevelController.finalScore)
+        {
+            PlayerPrefs.SetInt(levelScore, LevelController.finalScore);
+        }
         GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().PlayMusic("Button Sound");
         SceneManager.LoadScene("LevelMenuScene");
     }
