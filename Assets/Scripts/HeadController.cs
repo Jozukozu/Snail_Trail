@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HeadController : MonoBehaviour
 {
+    //Code for when pick up is touched. This destroys the pick up object and adds to the score and energy.
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Pick Up")

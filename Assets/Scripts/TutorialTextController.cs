@@ -4,19 +4,10 @@ using UnityEngine;
 
 public class TutorialTextController : MonoBehaviour
 {
+    //This code controls the tutorial texts that pop and and disappear in the tutorial level.
+
     private bool snailInTrigger;
     public GameObject text;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     private void OnTriggerEnter(Collider other)
     {

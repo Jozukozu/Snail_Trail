@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class LevelEndController : MonoBehaviour
 {
+    //This code controls the level ending events. When player approaches the friend snail, level ends, and score is saved if it is a high score.
+
     public GameObject endDialog;
     public GameObject snail;
     public GameObject shell;

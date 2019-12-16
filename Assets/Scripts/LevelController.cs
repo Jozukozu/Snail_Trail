@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour
 {
+    //This code controls the level being played. It sets the audio, keeps track of score and works the code of pause menu.
 
     public static int baseScore;
     public static int energyScore;
@@ -23,7 +24,7 @@ public class LevelController : MonoBehaviour
         baseScore = 0;
         energyScore = 0;
         energy = 20;
-        InvokeRepeating("decreaseEnergy", 5.0f, 1.0f);
+        InvokeRepeating("DecreaseEnergy", 5.0f, 1.0f);
         float musicVolume = PlayerPrefs.GetFloat("musicVolume", 1.0f); 
         GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().StopMusic("Background Music");
         GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().SetVolume("Level Background Music", musicVolume);
@@ -35,10 +36,11 @@ public class LevelController : MonoBehaviour
 
     void Update()
     {
+        //Activating pause menu.
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             escMenu.SetActive(true);
-            CancelInvoke("decreaseEnergy");
+            CancelInvoke("DecreaseEnergy");
             snail.SetActive(false);
             shell.SetActive(false);
 
@@ -56,16 +58,16 @@ public class LevelController : MonoBehaviour
     {
         if(LevelEndController.gameOver)
         {
-            CancelInvoke("decreaseEnergy");
+            CancelInvoke("DecreaseEnergy");
         }
         finalScore = baseScore + energyScore;
         energyText.text = "Energy:" + energy.ToString();
         scoreText.text ="Points: " + finalScore.ToString();
     }
 
-    void decreaseEnergy()
+    void DecreaseEnergy()
     {
-        Debug.Log("decreaseEnergy");
+        Debug.Log("DecreaseEnergy");
         if (energy > 0) 
         {
             energy--;
@@ -87,7 +89,7 @@ public class LevelController : MonoBehaviour
     {
         ButtonSound();
         escMenu.SetActive(false);
-        InvokeRepeating("decreaseEnergy", 1.0f, 1.0f);
+        InvokeRepeating("DecreaseEnergy", 1.0f, 1.0f);
         snail.SetActive(true);
         shell.SetActive(true);
     }

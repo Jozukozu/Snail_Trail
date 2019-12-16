@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class StartController : MonoBehaviour
 {
-
+    //This code controls the start screen. From start screen you can go to settings, level menu or exit the game.
 
     void Start()
     {

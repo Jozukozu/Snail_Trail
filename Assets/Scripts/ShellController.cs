@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class ShellController : MonoBehaviour
 {
+
+    //This code controls the shell. It makes the shell move when the body is "hidden inside" and shell to follow the body in right place when the body "is out of the shell".
+
+
     public Rigidbody rigidBody;
     public float speed;
     private KeyCode shellMode;
@@ -17,9 +21,10 @@ public class ShellController : MonoBehaviour
     private Vector3[] bonePosition = new Vector3[8];
     private GameObject[] snailBones = new GameObject[8];
 
-    // Start is called before the first frame update
+
     void Start()
     {
+        //saving a first state of all the snail tail pieces. This helps resetting them in the right way after coming out of shell.
         snailBones = GameObject.FindGameObjectsWithTag("Bone Object"); 
         for (int i = 1; i < snailBones.Length; i++)
         {
@@ -29,7 +34,7 @@ public class ShellController : MonoBehaviour
         Debug.Log(shellMode);
     }
 
-    // Update is called once per frame
+
     void FixedUpdate()
     {
         if (moveHorizontal > 0)
@@ -41,6 +46,7 @@ public class ShellController : MonoBehaviour
             SnailBodyController.facingRight = false;
         }
 
+        //Code to move shell when in shell mode.
         if (shellVisible)
         {
             shell.GetComponent<SphereCollider>().enabled = true;
@@ -70,6 +76,7 @@ public class ShellController : MonoBehaviour
                 }
             }
         }
+        //Else we make sure shell keeps up in the right place with the body.
         else
         {
             Vector3 shellPoint = bone.transform.position + transform.TransformVector(0.0f, bone.transform.localPosition.y + 0.5f, 0.0f);
@@ -95,6 +102,7 @@ public class ShellController : MonoBehaviour
         }
     }
 
+    //Resetting snail after coming out of shell.
     private void ResetSnail()
     {
         for (int i = 0; i < snailBones.Length; i++)
@@ -158,7 +166,6 @@ public class ShellController : MonoBehaviour
         if (collision.gameObject.layer == 11)
         {
             onGround = true;
-            //Debug.Log("on ground");
         }
     }
 
@@ -167,7 +174,6 @@ public class ShellController : MonoBehaviour
         if (collision.gameObject.layer == 11)
         {
             onGround = true;
-            //Debug.Log("on ground");
         }
     }
 
@@ -176,10 +182,10 @@ public class ShellController : MonoBehaviour
         if (collision.gameObject.layer == 11)
         {
             onGround = false;
-            //Debug.Log("not on ground");
         }
     }
 
+    //Code for when pick up is touched. This destroys the pick up object and adds to the score and energy.
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Pick Up")

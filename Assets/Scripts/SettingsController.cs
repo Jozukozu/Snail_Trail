@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class SettingsController : MonoBehaviour
 {
+    //This code controls the settins screen.
+
     public Dropdown resolutionDropdown;
     public Toggle windowedToggle;
     public Slider musicSlider;
@@ -19,18 +21,22 @@ public class SettingsController : MonoBehaviour
     private Boolean windowed;
     private string resolution;
 
+
     void Start()
     {
+        //First we set the music and sound slider values to what they were saved at or to default if none is saved.
         musicSlider.value = PlayerPrefs.GetFloat("musicVolume", 1.0f);
         soundSlider.value = PlayerPrefs.GetFloat("soundVolume", 1.0f);
+        //Then we play the background music track with the volume value from the slider.
         GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().SetVolume("Background Music", musicSlider.value);
         GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().PlayMusic("Background Music");
+        //Getting resolution values.
         width = Screen.width;
         height = Screen.height;
         resolution = width + "x" + height;
         var listAvailableStrings = resolutionDropdown.options.Select(option => option.text).ToList();
+        //Setting the value of resolution dropdown list to what the current resolution is.
         resolutionDropdown.value = listAvailableStrings.IndexOf(resolution);
-        Debug.Log(listAvailableStrings.IndexOf(resolution));
 
         if (Screen.fullScreen == true)
         {
@@ -58,6 +64,7 @@ public class SettingsController : MonoBehaviour
         windowed = windowedToggle.isOn;
     }
 
+    //When apply button is pressed, setting are saved to playerpreferences. Playerpreferences get saved in registry.
     public void Apply()
     {
         ButtonSound();
@@ -81,6 +88,7 @@ public class SettingsController : MonoBehaviour
         }
     }
 
+    //If there are any unsaved settings when pressing back button, it asks if you want to save them or if you just want to exit to start screen without saving them.
     public void Back()
     {
         ButtonSound();

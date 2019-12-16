@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    //This code controls the movement of the camera. It keeps it following the snail. Depending whether player is in shell mode or not, the camera follows either shell or 
+    //snail body.
 
     public GameObject snail;
     public GameObject snailRoot;

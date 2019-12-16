@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SnailBodyController : MonoBehaviour
 {
+    //This code controls the whole snail's movement from the root object.
 
     public float speed;
     public Vector3 averageNormal;
@@ -40,12 +41,14 @@ public class SnailBodyController : MonoBehaviour
 
         if (GetRaycastDownAtNewPosition(movementDirection, out rightHitInfo, out leftHitInfo))
         {
+            //Not falling, so all rigidbodies of the snail are turned kinematic and gravity off.
             Rigidbody[] allRBs = GetComponentsInChildren<Rigidbody>();
             for (int r = 0; r < allRBs.Length; r++)
             {
                 allRBs[r].useGravity = false;
                 allRBs[r].isKinematic = true;
             }
+            //Getting the right angles depending whether there is obstacle coming up infront.
             if (GetHeadRayHigh(movementDirection, out forwardHitInfo))
             {
                 averageNormal = (leftHitInfo.normal + forwardHitInfo.normal) / 2;
@@ -61,7 +64,7 @@ public class SnailBodyController : MonoBehaviour
                 averageNormal = (leftHitInfo.normal + rightHitInfo.normal) / 2;
                 averagePoint = (leftHitInfo.point + rightHitInfo.point) / 2;
             }
-            //Debug.Log("real root: " + averageNormal);
+
             Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, averageNormal);
             Quaternion finalRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, float.PositiveInfinity);
 
@@ -92,7 +95,7 @@ public class SnailBodyController : MonoBehaviour
         }
     }
 
-
+    //Raycast tracking ground underneath.
     private bool GetRaycastDownAtNewPosition(Vector3 movementDirection, out RaycastHit rightHitInfo, out RaycastHit leftHitInfo)
     {
 
@@ -106,13 +109,7 @@ public class SnailBodyController : MonoBehaviour
             Debug.DrawRay(transform.position + (transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up * rayLength, Color.green);
             Debug.DrawRay(transform.position + (transform.right * speed) - transform.localScale.x / 8 * transform.right, -transform.up * rayLength, Color.red);
         }
-        //else if (movementDirection.x < 0)
-        //{
-        //    rightRay = new Ray(transform.position + (-transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up);
-        //    leftRay = new Ray(transform.position + (-transform.right * speed) - transform.localScale.x / 8 * transform.right, -transform.up);
-        //    Debug.DrawRay(transform.position + (-transform.right * speed) + transform.localScale.x / 8 * transform.right, -transform.up * rayLength, Color.green);
-        //    Debug.DrawRay(transform.position + (-transform.right * speed) - transform.localScale.x / 8 * transform.right, -transform.up * rayLength, Color.red);
-        //}
+
         else
         {
             rightRay = new Ray(transform.position + transform.localScale.x / 8 * transform.right, -transform.up);
@@ -134,6 +131,7 @@ public class SnailBodyController : MonoBehaviour
         return false;
     }
 
+    //Raycast tracking obstacle that is coming from forward. This one is pointed downwards.
     private bool GetHeadRayLow(Vector3 movementDirection, out RaycastHit forwardInfo)
     {
         Ray forwardRay;
@@ -158,6 +156,7 @@ public class SnailBodyController : MonoBehaviour
         return false;
     }
 
+    //Raycast tracking obstacle that is coming from forward. This one is pointed upwards.
     private bool GetHeadRayHigh(Vector3 movementDirection, out RaycastHit forwardInfo)
     {
         Ray forwardRay;
@@ -197,14 +196,7 @@ public class SnailBodyController : MonoBehaviour
         {
             Vector3 difference = transform.position - groundPoint;
             transform.position = groundPoint - difference;
-            //if (facingRight)
-            //{
-            //    transform.localRotation = Quaternion.Euler(0, 0, 0);
-            //}
-            //else
-            //{
-            //    transform.localRotation = Quaternion.Euler(0, 180, 0);
-            //}
+
             GameObject[] snailBones = GameObject.FindGameObjectsWithTag("Bone Object");
             for (int i = 0; i < snailBones.Length - 1; i++)
             {

@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class AudioController : MonoBehaviour
 {
+    //This code controls the audio over all scenes. This enables us to play same track without starting it over when switching between scenes.
 
-    private AudioSource _audioSource;
     private AudioSource backgroundMusic;
     private AudioSource buttonSound;
     private AudioSource levelBackgroundMusic;

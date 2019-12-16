@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class LevelMenuController : MonoBehaviour
 {
+    //This code controls the level menu. In level menu you can choose the level you want to play, if it is unlocked.
 
     public Text levelName;
     public Button startButton;
@@ -25,6 +26,7 @@ public class LevelMenuController : MonoBehaviour
         float soundVolume = PlayerPrefs.GetFloat("soundVolume", 1.0f);
         GameObject.FindGameObjectWithTag("Audio Controller").GetComponent<AudioController>().SetVolume("Button Sound", soundVolume);
 
+        //If player has played through tutorial level, it unlocks level 1. Level 1 does not exist at the moment.
         if(PlayerPrefs.GetInt("level0Score") > 0)
         {
             level1Button.interactable = true;
@@ -50,6 +52,7 @@ public class LevelMenuController : MonoBehaviour
         SceneManager.LoadScene("StartScene");
     }
 
+    //This functions makes the info of chosen level show up in the box right of the screen. It shows the name of the level and player's high score on it.
     public void LevelButton(Text name)
     {
         ButtonSound();
